@@ -13,9 +13,6 @@ namespace HogwartsPotions.Models
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Student> Students { get; set; }
 
-        public DbSet<Room> Rooms { get; set; }
-        public DbSet<Student> Students { get; set; }
-
         public HogwartsContext(DbContextOptions<HogwartsContext> options) : base(options)
         {
         }

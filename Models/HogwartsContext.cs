@@ -9,6 +9,8 @@ namespace HogwartsPotions.Models
     public class HogwartsContext : DbContext
     {
         public const int MaxIngredientsForPotions = 5;
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Student> Students { get; set; }
 
         public HogwartsContext(DbContextOptions<HogwartsContext> options) : base(options)
         {
@@ -26,7 +28,7 @@ namespace HogwartsPotions.Models
 
         public Task<List<Room>> GetAllRooms()
         {
-            throw new NotImplementedException();
+            return Task.Run(() => Rooms.ToListAsync());
         }
 
         public async Task UpdateRoom(Room room)

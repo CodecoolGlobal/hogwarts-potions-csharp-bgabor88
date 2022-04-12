@@ -12,6 +12,8 @@ namespace HogwartsPotions.Models
     {
         public const int MaxIngredientsForPotions = 5;
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<Potion> Potions { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Student> Students { get; set; }
 
         public HogwartsContext(DbContextOptions<HogwartsContext> options) : base(options)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using HogwartsPotions.Models.Enums;
 
 namespace HogwartsPotions.Models.Entities
 {
@@ -11,6 +12,8 @@ namespace HogwartsPotions.Models.Entities
         public string Name { get; set; }
 
         public Student Student { get; set; }
+
+        public BrewingStatus Status { get; set; }
 
         public IList<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
     }

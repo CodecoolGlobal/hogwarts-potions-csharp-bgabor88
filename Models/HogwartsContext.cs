@@ -36,6 +36,7 @@ namespace HogwartsPotions.Models
         public async Task AddRoom(Room room)
         {
             await Task.Run(() => Rooms.Add(room));
+            
         }
 
         public Task<Room> GetRoom(long roomId)
@@ -48,14 +49,9 @@ namespace HogwartsPotions.Models
             return Task.Run(() => Rooms.ToListAsync());
         }
 
-        public async Task UpdateRoom(Room room)
+        public Task UpdateRoom(Room room)
         {
-            var oldRoom = await GetRoom(room.ID);
-            if (oldRoom != null)
-            {
-                await DeleteRoom(oldRoom.ID);
-                await AddRoom(room);
-            }
+            return Task.Run(() => Rooms.Update(room));
         }
 
         public async Task DeleteRoom(long id)

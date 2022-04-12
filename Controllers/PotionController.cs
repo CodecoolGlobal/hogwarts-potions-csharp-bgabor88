@@ -19,7 +19,7 @@ namespace HogwartsPotions.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Room>> GetAllPotions()
+        public async Task<List<Potion>> GetAllPotions()
         {
             return await _context.GetAllPotions();
         }

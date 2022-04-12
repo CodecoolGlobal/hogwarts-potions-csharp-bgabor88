@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HogwartsPotions.Controllers
 {
-    [ApiController, Route("/room")]
+    [ApiController, Route("/[controller]")]
     public class RoomController : ControllerBase
     {
         private readonly HogwartsContext _context;
@@ -21,15 +21,12 @@ namespace HogwartsPotions.Controllers
         [HttpGet]
         public async Task<List<Room>> GetAllRooms()
         {
-            Debug.WriteLine("from get all");
-
             return await _context.GetAllRooms();
         }
 
         [HttpPost]
         public async  Task AddRoom([FromBody] Room room)
         {
-            Debug.WriteLine($"{room.ID} - {room.Capacity} - {room.Residents.ToString()}");
             await _context.AddRoom(room);
             await _context.SaveChangesAsync();
         }
@@ -37,8 +34,6 @@ namespace HogwartsPotions.Controllers
         [HttpGet("{id:long}")]
         public async Task<Room> GetRoomById(long id)
         {
-            Debug.WriteLine("from get specific");
-
             return await _context.GetRoom(id);
         }
 

@@ -9,22 +9,25 @@ namespace HogwartsPotions.Models.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ID { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = "DEFAULT";
 
         public Student Student { get; set; }
 
         public BrewingStatus Status { get; set; } = BrewingStatus.Brew;
 
-        public IList<Ingredient> Ingredients { get; private set; }
+        //public HashSet<long> IngredientsId { get; set; } = new HashSet<long>();
+        public HashSet<Ingredient> Ingredients { get; set; } = new HashSet<Ingredient>();
+
+        //public ICollection<PotionIngredient> PotionIngredients { get; set; }
+
 
         public Potion()
         {
-            Ingredients = new List<Ingredient>();
         }
 
-        public void AddIngredient(Ingredient ingredient)
-        {
-            Ingredients.Add(ingredient);
-        }
+        //public void AddIngredient(Ingredient ingredient)
+        //{
+        //    Ingredients.Add(ingredient);
+        //}
     }
 }

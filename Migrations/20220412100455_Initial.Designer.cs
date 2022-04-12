@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HogwartsPotions.Migrations
 {
     [DbContext(typeof(HogwartsContext))]
-    [Migration("20220412045638_updateed-potion-2")]
-    partial class updateedpotion2
+    [Migration("20220412100455_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,6 +43,33 @@ namespace HogwartsPotions.Migrations
                     b.HasIndex("PotionID");
 
                     b.ToTable("Ingredients");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1L,
+                            Name = "Unicorn fart"
+                        },
+                        new
+                        {
+                            ID = 2L,
+                            Name = "Frog leg"
+                        },
+                        new
+                        {
+                            ID = 3L,
+                            Name = "Eternal flame"
+                        },
+                        new
+                        {
+                            ID = 4L,
+                            Name = "Moonstone"
+                        },
+                        new
+                        {
+                            ID = 5L,
+                            Name = "Fat-Man fat"
+                        });
                 });
 
             modelBuilder.Entity("HogwartsPotions.Models.Entities.Potion", b =>
@@ -67,6 +94,14 @@ namespace HogwartsPotions.Migrations
                     b.HasIndex("StudentID");
 
                     b.ToTable("Potions");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 2L,
+                            Name = "Burning fat",
+                            Status = (byte)0
+                        });
                 });
 
             modelBuilder.Entity("HogwartsPotions.Models.Entities.Room", b =>
@@ -119,12 +154,12 @@ namespace HogwartsPotions.Migrations
                     b.Property<byte>("PetType")
                         .HasColumnType("tinyint");
 
-                    b.Property<long?>("RoomID")
+                    b.Property<long?>("RoomId")
                         .HasColumnType("bigint");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("RoomID");
+                    b.HasIndex("RoomId");
 
                     b.ToTable("Students");
 
@@ -172,7 +207,8 @@ namespace HogwartsPotions.Migrations
                 {
                     b.HasOne("HogwartsPotions.Models.Entities.Room", "Room")
                         .WithMany("Residents")
-                        .HasForeignKey("RoomID");
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Room");
                 });

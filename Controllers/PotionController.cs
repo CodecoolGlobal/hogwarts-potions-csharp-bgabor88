@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HogwartsPotions.Controllers
 {
-    [ApiController, Route("/[controller]")]
+    [ApiController, Route("/potions")]
     public class PotionController : ControllerBase
     {
         private readonly HogwartsContext _context;

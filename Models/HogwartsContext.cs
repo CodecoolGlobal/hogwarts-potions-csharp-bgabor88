@@ -38,7 +38,6 @@ namespace HogwartsPotions.Models
         public async Task AddRoom(Room room)
         {
             await Task.Run(() => Rooms.Add(room));
-            
         }
 
         public Task<Room> GetRoom(long roomId)
@@ -72,6 +71,35 @@ namespace HogwartsPotions.Models
                 return Rooms.Where(room => room.Residents.Any(student =>
                     student.PetType != PetType.Cat || student.PetType != PetType.Owl)).ToListAsync();
             });
+        }
+
+        public Task<List<Potion>> GetAllPotions()
+        {
+            return Task.Run(() => Potions.ToListAsync());
+        }
+
+        public async Task AddPotion(Potion potion)
+        {
+            await Task.Run(() => Potions.Add(potion));
+        }
+
+        public Task<Potion> GetPotion(long potionId)
+        {
+            return Task.Run(() => Potions.FirstOrDefaultAsync(potion => potion.ID == potionId));
+        }
+
+        public Task UpdatePotion(Potion updatedPotion)
+        {
+            return Task.Run(() => Potions.Update(updatedPotion));
+        }
+
+        public async Task DeletePotion(long id)
+        {
+            var potion = await GetPotion(id);
+            if (potion != null)
+            {
+                Potions.Remove(potion);
+            }
         }
     }
 }

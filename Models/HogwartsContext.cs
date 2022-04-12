@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HogwartsPotions.Models.Entities;
 using HogwartsPotions.Models.Enums;
@@ -34,12 +35,12 @@ namespace HogwartsPotions.Models
 
         public async Task AddRoom(Room room)
         {
-            throw new NotImplementedException();
+            await Task.Run(() => Rooms.Add(room));
         }
 
         public Task<Room> GetRoom(long roomId)
         {
-            throw new NotImplementedException();
+            return Task.Run(() => Rooms.FirstOrDefaultAsync(room =>room.ID == roomId));
         }
 
         public Task<List<Room>> GetAllRooms()
@@ -49,17 +50,30 @@ namespace HogwartsPotions.Models
 
         public async Task UpdateRoom(Room room)
         {
-            throw new NotImplementedException();
+            var oldRoom = await GetRoom(room.ID);
+            if (oldRoom != null)
+            {
+                await DeleteRoom(oldRoom.ID);
+                await AddRoom(room);
+            }
         }
 
         public async Task DeleteRoom(long id)
         {
-            throw new NotImplementedException();
+            var oldRoom = await GetRoom(id);
+            if (oldRoom != null)
+            {
+                Rooms.Remove(oldRoom);
+            }
         }
 
         public Task<List<Room>> GetRoomsForRatOwners()
         {
-            throw new NotImplementedException();
+            return Task.Run(() =>
+            {
+                return Rooms.Where(room => room.Residents.Any(student =>
+                    student.PetType != PetType.Cat || student.PetType != PetType.Owl)).ToListAsync();
+            });
         }
     }
 }

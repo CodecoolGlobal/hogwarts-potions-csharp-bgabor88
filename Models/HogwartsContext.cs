@@ -38,8 +38,6 @@ public class HogwartsContext : DbContext
             .HasForeignKey(s => s.RoomId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        
-
         //modelBuilder.Entity<PotionIngredient>()
         //    .HasKey(pi => new { pi.PotionId, pi.IngredientId });
 
@@ -72,7 +70,7 @@ public class HogwartsContext : DbContext
 
         var roomOne = new Room() { ID = 1, Capacity = 2 };
         //roomOne.Residents.Add(studentOne);
-        //studentOne.Room = roomOne;
+        //studentOne.RoomId = roomOne.ID;
         var roomTwo = new Room() { ID = 2, Capacity = 2 };
         var roomThree = new Room() { ID = 3, Capacity = 2 };
 

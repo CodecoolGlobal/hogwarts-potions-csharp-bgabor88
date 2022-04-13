@@ -32,74 +32,7 @@ public class HogwartsContext : DbContext
     #region ModelCreation
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Student>()
-            .HasOne(s => s.Room)
-            .WithMany(r => r.Residents)
-            .HasForeignKey(s => s.RoomId)
-            .OnDelete(DeleteBehavior.SetNull);
 
-        //modelBuilder.Entity<PotionIngredient>()
-        //    .HasKey(pi => new { pi.PotionId, pi.IngredientId });
-
-        //modelBuilder.Entity<PotionIngredient>()
-        //    .HasOne(pi => pi.Ingredient)
-        //    .WithMany(i => i.PotionIngredients)
-        //    .HasForeignKey(pi => pi.PotionId);
-
-        //modelBuilder.Entity<PotionIngredient>()
-        //    .HasOne(pi => pi.Potion)
-        //    .WithMany(p => p.PotionIngredients)
-        //    .HasForeignKey(pi => pi.IngredientId);
-
-        //modelBuilder.Entity<Potion>()
-        //    .HasMany<Ingredient>(p => p.Ingredients)
-        //    .WithMany(p => p.Potions);
-
-        //modelBuilder.Entity<Potion>()
-        //    .Navigation(p => p.Ingredients)
-        //    .UsePropertyAccessMode(PropertyAccessMode.PreferProperty);
-
-        //modelBuilder.Entity<Student>().HasKey(p => p.RoomFk);
-        //modelBuilder.Entity<Student>().HasOne(p => p.Room).WithOne();
-
-        var studentOne = new Student() { HouseType = HouseType.Gryffindor, PetType = PetType.Cat, ID = 1, Name = "Marika" };
-        var studentTwo = new Student() { HouseType = HouseType.Gryffindor, PetType = PetType.Cat, ID = 2, Name = "Sanyi" };
-        var studentThree = new Student() { HouseType = HouseType.Gryffindor, PetType = PetType.Cat, ID = 3, Name = "Bélus" };
-
-        modelBuilder.Entity<Student>().HasData(studentOne, studentTwo, studentThree);
-
-        var roomOne = new Room() { ID = 1, Capacity = 2 };
-        //roomOne.Residents.Add(studentOne);
-        //studentOne.RoomId = roomOne.ID;
-        var roomTwo = new Room() { ID = 2, Capacity = 2 };
-        var roomThree = new Room() { ID = 3, Capacity = 2 };
-
-        modelBuilder.Entity<Room>().HasData(roomOne, roomTwo, roomThree);
-
-        var ingredientOne = new Ingredient() { ID = 1, Name = "Unicorn fart" };
-        var ingredientTwo = new Ingredient() { ID = 2, Name = "Frog leg" };
-        var ingredientThree = new Ingredient() { ID = 3, Name = "Eternal flame" };
-        var ingredientFour = new Ingredient() { ID = 4, Name = "Moonstone" };
-        var ingredientFive = new Ingredient() { ID = 5, Name = "Fat-Man fat" };
-
-        modelBuilder.Entity<Ingredient>()
-            .HasData(ingredientOne, ingredientTwo, ingredientThree, ingredientFour, ingredientFive);
-
-        var potionOne = new Potion() { ID = 2, Name = "Burning fat", Status = BrewingStatus.Brew};
-
-        //var piOne = new PotionIngredient
-        //{
-        //    PotionId = potionOne.ID, IngredientId = ingredientThree.ID
-        //};
-
-        //var piTwo = new PotionIngredient
-        //{
-        //    PotionId = potionOne.ID, IngredientId = ingredientFive.ID
-        //};
-
-        //modelBuilder.Entity<PotionIngredient>().HasData(piOne, piTwo);
-
-        modelBuilder.Entity<Potion>().HasData(potionOne);
     }
 
     #endregion
@@ -112,12 +45,16 @@ public class HogwartsContext : DbContext
 
     public Task<Room> GetRoom(long roomId)
     {
-        return Task.Run(() => Rooms.FirstOrDefaultAsync(room => room.ID == roomId));
+        return Task.Run(() => Rooms
+            .Include(r => r.Residents)
+            .FirstOrDefaultAsync(room => room.Id == roomId));
     }
 
     public Task<List<Room>> GetAllRooms()
     {
-        return Task.Run(() => Rooms.ToListAsync());
+        return Task.Run(() => Rooms
+            .Include(x => x.Residents)
+            .ToListAsync());
     }
 
     public Task UpdateRoom(Room room)
@@ -138,8 +75,11 @@ public class HogwartsContext : DbContext
     {
         return Task.Run(() =>
         {
-            return Rooms.Where(room => room.Residents.Any(student =>
-                student.PetType != PetType.Cat || student.PetType != PetType.Owl)).ToListAsync();
+            return Rooms
+                .Include(r => r.Residents)
+                .Where(room => room.Residents
+                    .Any(student => student.PetType != PetType.Cat || student.PetType != PetType.Owl))
+                .ToListAsync();
         });
     }
 
@@ -148,7 +88,11 @@ public class HogwartsContext : DbContext
     #region PotionOperations
     public Task<List<Potion>> GetAllPotions()
     {
-        return Task.Run(() => Potions.ToListAsync());
+        return Task.Run(() => Potions
+            .Include(p => p.Ingredients)
+            .Include(p => p.Status)
+            .Include(p => p.Student)
+            .ToListAsync());
     }
 
     public async Task AddPotion(Potion potion)
@@ -158,7 +102,11 @@ public class HogwartsContext : DbContext
 
     public Task<Potion> GetPotion(long potionId)
     {
-        return Task.Run(() => Potions.FirstOrDefaultAsync(potion => potion.ID == potionId));
+        return Task.Run(() => Potions
+            .Include(p => p.Ingredients)
+            .Include(p => p.Status)
+            .Include(p => p.Student)
+            .FirstOrDefaultAsync(potion => potion.Id == potionId));
     }
 
     public Task UpdatePotion(Potion updatedPotion)
@@ -172,6 +120,46 @@ public class HogwartsContext : DbContext
         if (potion != null)
         {
             Potions.Remove(potion);
+        }
+    }
+
+    #endregion
+
+    #region StudentOperations
+    public Task<List<Student>> GetAllStudent()
+    {
+        return Task.Run(() => Students
+            .Include(s => s.PetType)
+            .Include(s => s.HouseType)
+            .Include(s => s.Room)
+            .ToListAsync());
+    }
+
+    public async Task AddStudent(Student student)
+    {
+        await Task.Run(() => Students.Add(student));
+    }
+
+    public Task<Student> GetStudent(long id)
+    {
+        return Task.Run(() => Students
+            .Include(s => s.Room)
+            .Include(s => s.PetType)
+            .Include(s => s.HouseType)
+            .FirstOrDefaultAsync(student => student.Id == id));
+    }
+
+    public Task UpdateStudent(Student updatedStudent)
+    {
+        return Task.Run(() => Students.Update(updatedStudent));
+    }
+
+    public async Task DeleteStudent(long id)
+    {
+        var studentToDelete = await GetStudent(id);
+        if (studentToDelete != null)
+        {
+            Students.Remove(studentToDelete);
         }
     }
 

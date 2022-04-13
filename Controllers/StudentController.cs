@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HogwartsPotions.Models;
 using HogwartsPotions.Models.Entities;
@@ -42,6 +40,19 @@ namespace HogwartsPotions.Controllers
         {
             updatedStudent.Id = id;
             await _context.UpdateStudent(updatedStudent);
+            await _context.SaveChangesAsync();
+        }
+
+        [HttpPut("{studentId:long}/occupy/{roomId:long}")]
+        public async Task OccupyRoom(long studentId, long roomId)
+        {
+            var student = await _context.GetStudent(studentId);
+            var room = await _context.GetRoom(roomId);
+            if (student != null && room != null)
+            {
+                student.Room = room;
+            }
+
             await _context.SaveChangesAsync();
         }
 

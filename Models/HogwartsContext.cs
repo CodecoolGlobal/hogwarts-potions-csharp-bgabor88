@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +16,7 @@ public class HogwartsContext : DbContext
     public DbSet<Potion> Potions { get; set; }
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<Student> Students { get; set; }
+    public DbSet<Recipe> Recipes { get; set; }
 
 
     #endregion
@@ -89,8 +89,7 @@ public class HogwartsContext : DbContext
     public Task<List<Potion>> GetAllPotions()
     {
         return Task.Run(() => Potions
-            .Include(p => p.Ingredients)
-            .Include(p => p.Status)
+            .Include(p => p.UsedIngredients)
             .Include(p => p.Student)
             .ToListAsync());
     }
@@ -103,15 +102,9 @@ public class HogwartsContext : DbContext
     public Task<Potion> GetPotion(long potionId)
     {
         return Task.Run(() => Potions
-            .Include(p => p.Ingredients)
-            .Include(p => p.Status)
+            .Include(p => p.UsedIngredients)
             .Include(p => p.Student)
             .FirstOrDefaultAsync(potion => potion.Id == potionId));
-    }
-
-    public Task UpdatePotion(Potion updatedPotion)
-    {
-        return Task.Run(() => Potions.Update(updatedPotion));
     }
 
     public async Task DeletePotion(long id)
@@ -130,6 +123,9 @@ public class HogwartsContext : DbContext
     {
         return Task.Run(() => Students
             .Include(s => s.Room)
+            .Include(s => s.Recipes)
+            .Include(s => s.Potions)
+            .ThenInclude(p => p.UsedIngredients)
             .ToListAsync());
     }
 
@@ -142,6 +138,8 @@ public class HogwartsContext : DbContext
     {
         return Task.Run(() => Students
             .Include(s => s.Room)
+            .Include(s => s.Potions)
+            .ThenInclude(p => p.UsedIngredients)
             .FirstOrDefaultAsync(student => student.Id == id));
     }
 
@@ -191,6 +189,64 @@ public class HogwartsContext : DbContext
         if (ingredientToDelete != null)
         {
             Ingredients.Remove(ingredientToDelete);
+        }
+    }
+
+    #endregion
+
+    #region RecipeOperations
+
+    public int CountUserRecipes(Student student)
+    {
+        return Recipes.Count(r => r.Student == student) + 1;
+    }
+
+    public BrewingStatus CheckBrewingStatus(Potion potion)
+    {
+        if (potion.UsedIngredients.Count < 5)
+        {
+            return BrewingStatus.Brew;
+        }
+
+        var recipes =  GetAllRecipe().Result;
+        var newRecipeIngredients = potion.UsedIngredients;
+        return recipes.Select(recipe => recipe.Ingredients)
+            .Any(ingredients => ingredients
+                .SetEquals(newRecipeIngredients)) ? BrewingStatus.Discovery : BrewingStatus.Replica;
+    }
+
+    public Task<List<Recipe>> GetAllRecipe()
+    {
+        return Task.Run(() => Recipes
+            .Include(r =>r.Ingredients)
+            .Include(r => r.Student)
+            .ToListAsync());
+    }
+
+    public async Task AddRecipe(Recipe recipe)
+    {
+        await Task.Run(() => Recipes.Add(recipe));
+    }
+
+    public Task<Recipe> GetRecipe(long id)
+    {
+        return Task.Run(() => Recipes
+            .Include(r => r.Ingredients)
+            .Include(r => r.Student)
+            .FirstOrDefaultAsync(recipe => recipe.Id == id));
+    }
+
+    public Task UpdateRecipe(Recipe updatedRecipe)
+    {
+        return Task.Run(() => Recipes.Update(updatedRecipe));
+    }
+
+    public async Task DeleteRecipe(long id)
+    {
+        var recipeToDelete = await GetRecipe(id);
+        if (recipeToDelete != null)
+        {
+            Recipes.Remove(recipeToDelete);
         }
     }
 

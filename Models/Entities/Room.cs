@@ -7,9 +7,10 @@ namespace HogwartsPotions.Models.Entities
     public class Room
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long ID { get; set; }
-
+        public long Id { get; set; }
         public int Capacity { get; set; } = 0;
+
+
         public HashSet<Student> Residents { get; set; } = new HashSet<Student>();
 
         public Room()

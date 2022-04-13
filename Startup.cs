@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using HogwartsPotions.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,7 +24,8 @@ namespace HogwartsPotions
             services.AddDbContext<HogwartsContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddJsonOptions(opt => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

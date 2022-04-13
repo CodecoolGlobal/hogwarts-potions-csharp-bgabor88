@@ -160,4 +160,39 @@ public class HogwartsContext : DbContext
     }
 
     #endregion
+
+    #region IngredientOperations
+
+    public Task<List<Ingredient>> GetAllIngredient()
+    {
+        return Task.Run(() => Ingredients
+            .ToListAsync());
+    }
+
+    public async Task AddIngredient(Ingredient ingredient)
+    {
+        await Task.Run(() => Ingredients.Add(ingredient));
+    }
+
+    public Task<Ingredient> GetIngredient(long id)
+    {
+        return Task.Run(() => Ingredients
+            .FirstOrDefaultAsync(ingredient => ingredient.Id == id));
+    }
+
+    public Task UpdateIngredient(Ingredient updatedIngredient)
+    {
+        return Task.Run(() => Ingredients.Update(updatedIngredient));
+    }
+
+    public async Task DeleteIngredient(long id)
+    {
+        var ingredientToDelete = await GetIngredient(id);
+        if (ingredientToDelete != null)
+        {
+            Ingredients.Remove(ingredientToDelete);
+        }
+    }
+
+    #endregion
 }

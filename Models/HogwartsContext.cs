@@ -163,7 +163,7 @@ public class HogwartsContext : DbContext
 
     #region IngredientOperations
 
-    public Task<List<Ingredient>> GetAllIngredient()
+    public Task<List<Ingredient>> GetAllIngredients()
     {
         return Task.Run(() => Ingredients
             .ToListAsync());

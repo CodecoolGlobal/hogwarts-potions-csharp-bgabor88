@@ -16,6 +16,12 @@ namespace HogwartsPotions.Controllers
             _context = context;
         }
 
+        [HttpGet("{studentId:long}/potions")]
+        public async Task<List<Potion>> GetPotionsByStudent(long studentId)
+        {
+            return await _context.GetAllPotionsByStudent(await _context.GetStudent(studentId));
+        }
+
         [HttpGet]
         public async Task<List<Student>> GetAllStudents()
         {

@@ -128,6 +128,12 @@ public class HogwartsContext : DbContext
             .ThenInclude(p => p.UsedIngredients)
             .ToListAsync());
     }
+    public Task<List<Potion>> GetAllPotionsByStudent(Student student)
+    {
+        return Task.Run(() => Potions
+            .Where(p => p.Student == student)
+            .ToListAsync());
+    }
 
     public async Task AddStudent(Student student)
     {

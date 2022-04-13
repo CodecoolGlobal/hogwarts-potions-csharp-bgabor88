@@ -129,8 +129,6 @@ public class HogwartsContext : DbContext
     public Task<List<Student>> GetAllStudent()
     {
         return Task.Run(() => Students
-            .Include(s => s.PetType)
-            .Include(s => s.HouseType)
             .Include(s => s.Room)
             .ToListAsync());
     }
@@ -144,8 +142,6 @@ public class HogwartsContext : DbContext
     {
         return Task.Run(() => Students
             .Include(s => s.Room)
-            .Include(s => s.PetType)
-            .Include(s => s.HouseType)
             .FirstOrDefaultAsync(student => student.Id == id));
     }
 

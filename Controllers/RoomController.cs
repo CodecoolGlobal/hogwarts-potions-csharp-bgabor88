@@ -52,10 +52,10 @@ namespace HogwartsPotions.Controllers
             await _context.SaveChangesAsync();
         }
 
-        //[HttpGet("rat-owners")]
-        //public async Task<List<Room>> GetRoomsForRatOwners()
-        //{
-        //    return await _context.GetRoomsForRatOwners();
-        //}
+        [HttpGet("rat-owners")]
+        public async Task<List<Room>> GetRoomsForRatOwners()
+        {
+            return await _context.GetRoomsForRatOwners();
+        }
     }
 }

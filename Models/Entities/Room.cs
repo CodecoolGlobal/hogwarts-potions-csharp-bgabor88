@@ -1,21 +1,23 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HogwartsPotions.Models.Entities
 {
     public class Room
     {
+        public Room(int capacity)
+        {
+            Capacity = capacity;
+            Residents = new HashSet<Student>();
+        }
+
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-        public int Capacity { get; set; } = 0;
+        public int Capacity { get; set; }
 
 
-        public HashSet<Student> Residents { get; set; } = new HashSet<Student>();
-
-        public Room()
-        {
-            
-        }
+        // Navigation properties
+        public HashSet<Student> Residents { get; set; }
     }
 }

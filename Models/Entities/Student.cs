@@ -8,17 +8,14 @@ public class Student
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long Id { get; set; }
+    [Required] public string Name { get; set; } = null!;
 
-    [Required]
-    public string Name { get; set; } = null!;
     public HouseType HouseType { get; set; }
     public PetType PetType { get; set; }
-
 
     public Room Room { get; set; }
 
     public Student()
     {
-        
     }
 }

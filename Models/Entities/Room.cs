@@ -5,19 +5,15 @@ namespace HogwartsPotions.Models.Entities
 {
     public class Room
     {
-        public Room(int capacity)
+        public Room()
         {
-            Capacity = capacity;
-            Residents = new HashSet<Student>();
         }
-
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public int Capacity { get; set; }
 
-
         // Navigation properties
-        public HashSet<Student> Residents { get; set; }
+        public HashSet<Student> Residents { get; set; } = new();
     }
 }

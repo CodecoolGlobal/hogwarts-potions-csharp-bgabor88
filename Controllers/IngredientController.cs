@@ -23,10 +23,11 @@ namespace HogwartsPotions.Controllers
         }
 
         [HttpPost]
-        public async Task AddIngredient([FromBody] Ingredient ingredient)
+        public async Task<IActionResult> AddIngredient([FromBody] Ingredient ingredient)
         {
             await _context.AddIngredient(ingredient);
             await _context.SaveChangesAsync();
+            return CreatedAtAction("GetIngredientById", new { ingredient.Id }, ingredient);
         }
 
         [HttpGet("{id:long}")]

@@ -29,10 +29,11 @@ namespace HogwartsPotions.Controllers
         }
 
         [HttpPost]
-        public async  Task AddStudent([FromBody] Student student)
+        public async Task<IActionResult> AddStudent([FromBody] Student student)
         {
             await _context.AddStudent(student);
             await _context.SaveChangesAsync();
+            return CreatedAtAction("GetStudentById", new { student.Id }, student);
         }
 
         [HttpGet("{id:long}")]

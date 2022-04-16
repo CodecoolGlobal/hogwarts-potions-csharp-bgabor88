@@ -32,7 +32,6 @@ public class HogwartsContext : DbContext
     #region ModelCreation
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
     }
 
     #endregion
@@ -88,7 +87,7 @@ public class HogwartsContext : DbContext
     #region PotionOperations
     public async Task ModifyPotion(Potion potion, Ingredient ingredient)
     {
-        if (potion != null && ingredient != null && potion.UsedIngredients.Count < 5)
+        if (potion != null && ingredient != null && potion.UsedIngredients.Count < MaxIngredientsForPotions)
         {
             potion.UsedIngredients.Add(ingredient);
             potion.Status = CheckBrewingStatus(potion);
@@ -241,7 +240,7 @@ public class HogwartsContext : DbContext
 
     public BrewingStatus CheckBrewingStatus(Potion potion)
     {
-        if (potion.UsedIngredients.Count < 5)
+        if (potion.UsedIngredients.Count < MaxIngredientsForPotions)
         {
             return BrewingStatus.Brew;
         }

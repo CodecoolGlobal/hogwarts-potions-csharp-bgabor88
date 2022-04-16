@@ -1,0 +1,78 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: calc(10px + 2vmin);
+  color: rgb(0, 0, 0);
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.card-title{
+  margin-bottom: 0 !important;
+}
+
+.deleteBtn{
+  padding-right: 5px;
+  color: rgb(189, 189, 189);
+  margin-bottom: 0 !important;
+}
+
+.deleteBtn:hover{
+  color:red;
+  cursor: pointer;
+  transition: 1s ease-out;
+}
+
+.ingredients{
+  z-index: 1;
+  position: absolute;
+}
+
+.brew{
+  font-weight: bold;
+  color: rgb(180, 180, 180);
+}
+
+.replica{
+  font-weight: bold;
+  color: black;
+}
+
+.discovery{
+  font-weight: bold;
+  color: gold;
+}
+
+.infoBtn:hover {
+  cursor: pointer;
+  color:red;
+  transition: 1s ease-out;
+}

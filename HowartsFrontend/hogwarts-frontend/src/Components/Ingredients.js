@@ -1,24 +1,17 @@
 import React, { useContext, useState } from "react";
 import { RecipesContext } from "../DAL/ContextProviders/RecipesContext";
-import { IngredientsContext, AddIngredient } from "../DAL/ContextProviders/IngredientsContext";
-import { ListGroup, Card, Collapse, Form, Button } from "react-bootstrap";
+import { IngredientsContext } from "../DAL/ContextProviders/IngredientsContext";
+import { ListGroup, Card, Collapse, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import { Typeahead } from "react-bootstrap-typeahead";
+import { RegisterIngredient } from "../DAL/RegistrationComponents";
 
 export default function Ingredients() {
-  const { ingredients, setIngredients } = useContext(IngredientsContext);
+  const { ingredients } = useContext(IngredientsContext);
   const { recipes } = useContext(RecipesContext);
   const [selected, setSelected] = useState([]);
   const [open, setOpen] = useState(null);
-
-  const formHandler = (event) => {
-    event.preventDefault();
-    const ingredientData = {
-      name: event.target[0].value,
-    };
-    AddIngredient(ingredients, setIngredients, ingredientData).then(() => event.target.reset());
-  };
 
   const Content = () => {
     if (selected.length === 0) {
@@ -87,53 +80,31 @@ export default function Ingredients() {
   };
 
   return (
-    <header className="App-header">
-      <div className="container">
-        <div className="row d-flex flex-row justify-content-center flex-nowrap">
-          <div className="col-auto">
-            <Card bg="info" key="Select-ingredient" text="dark" style={{ width: "17rem" }} className="p-2 mt-2">
-              <Card.Body className="p-0">
-                <Form.Group>
-                  <Form.Label>Ingredients:</Form.Label>
-                  <Typeahead
-                    id="ingredient-list"
-                    size="lg"
-                    labelKey="name"
-                    onChange={setSelected}
-                    options={ingredients}
-                    placeholder="Choose an ingredient..."
-                    selected={selected}
-                  />
-                </Form.Group>
-              </Card.Body>
-            </Card>
-
-            <Card bg="info" key="Add-Ingredient" text="dark" style={{ width: "17rem" }} className="p-2 mt-2">
-              <Card.Body className="p-0">
-                <Form onSubmit={(e) => formHandler(e, e.target[0].value)}>
-                  <Form.Label>Add new:</Form.Label>
-                  <Form.Group className="pt-1">
-                    <Form.Control
-                      required
-                      min="2"
-                      size="lg"
-                      type="text"
-                      id="ingredientName"
-                      placeholder="Ingredient Name"
-                    />
-                  </Form.Group>
-                  <Button variant="danger" type="submit" className="mt-2 mb-0 p-2">
-                    Add ingredient
-                  </Button>
-                </Form>
-              </Card.Body>
-            </Card>
-          </div>
-          <div className="col">
-            <Content />
-          </div>
+    <div className="container">
+      <div className="row d-flex flex-row justify-content-center flex-nowrap">
+        <div className="col-auto">
+          <Card bg="info" key="Select-ingredient" text="dark" style={{ width: "17rem" }} className="p-2 mt-2">
+            <Card.Body className="p-0">
+              <Form.Group>
+                <Form.Label>Ingredients:</Form.Label>
+                <Typeahead
+                  id="ingredient-list"
+                  size="lg"
+                  labelKey="name"
+                  onChange={setSelected}
+                  options={ingredients}
+                  placeholder="Choose an ingredient..."
+                  selected={selected}
+                />
+              </Form.Group>
+            </Card.Body>
+          </Card>
+          <RegisterIngredient />
+        </div>
+        <div className="col">
+          <Content />
         </div>
       </div>
-    </header>
+    </div>
   );
 }

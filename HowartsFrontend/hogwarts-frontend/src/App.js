@@ -25,14 +25,16 @@ function App() {
             <IngredientsProvider>
               <div className="App">
                 <Navbar getActive={activePage} setActive={setActivePage} />
-                <Routes>
-                  <Route path="/Ingredients" element={<Ingredients />}></Route>
-                  <Route path="/Potions" element={<Potions />}></Route>
-                  <Route path="/Recipes" element={<Recipes />}></Route>
-                  <Route path="/Students" element={<Students />}></Route>
-                  <Route path="/Rooms" element={<Rooms />}></Route>
-                  <Route path="/" element={<Rooms />}></Route>
-                </Routes>
+                <div className="App-body">
+                  <Routes>
+                    <Route path="/Ingredients" element={<Ingredients />}></Route>
+                    <Route path="/Potions" element={<Potions />}></Route>
+                    <Route path="/Recipes" element={<Recipes />}></Route>
+                    <Route path="/Students" element={<Students />}></Route>
+                    <Route path="/Rooms" element={<Rooms />}></Route>
+                    <Route path="/" element={<Rooms />}></Route>
+                  </Routes>
+                </div>
               </div>
             </IngredientsProvider>
           </RecipesProvider>

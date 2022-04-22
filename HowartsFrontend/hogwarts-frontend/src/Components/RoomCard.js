@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import StudentModal from "./StudentModal";
-import { RoomsContext } from "../DAL/ContextProviders/RoomsContext";
-import { StudentsContext, AddToRoom, LeaveRoom } from "../DAL/ContextProviders/StudentContext";
 import { Card, Collapse, ListGroup } from "react-bootstrap";
-import { DeleteRoom } from "../DAL/ContextProviders/RoomsContext";
+import { DeleteRoom, RoomsContext } from "../DAL/ContextProviders/RoomsContext";
+import { StudentsContext, AddToRoom, LeaveRoom } from "../DAL/ContextProviders/StudentContext";
+import { stateUpdater } from "../Utils/Utilities";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faAngleUp, faAngleDown, faPlus, faCircleMinus } from "@fortawesome/free-solid-svg-icons";
 
@@ -13,6 +13,18 @@ export default function RoomCard(props) {
   const [open, setOpen] = useState(null);
   const [addStudent, setAddStudent] = useState(false);
   const room = props.room;
+
+  const handleAddStudentToRoom = async (studentId) => {
+    const { updatedStudent, updatedRoom } = await AddToRoom(studentId, room.id);
+    stateUpdater(updatedStudent, setStudents);
+    stateUpdater(updatedRoom, setRooms);
+  };
+
+  const handleRemoveStudentFromRoom = async (studentId) => {
+    const { updatedStudent, updatedRoom } = await LeaveRoom(studentId, room.id);
+    stateUpdater(updatedStudent, setStudents);
+    stateUpdater(updatedRoom, setRooms);
+  };
 
   const RoomAdd = () => {
     if (room.capacity === room.residents.length) {
@@ -35,10 +47,7 @@ export default function RoomCard(props) {
               {students
                 .filter((student) => student.room === null)
                 .map((student) => (
-                  <ListGroup.Item
-                    key={student.id}
-                    onClick={() => AddToRoom(student, room, students, setStudents, rooms, setRooms)}
-                  >
+                  <ListGroup.Item key={student.id} onClick={() => handleAddStudentToRoom(student.id)}>
                     {student.name}
                   </ListGroup.Item>
                 ))}
@@ -78,7 +87,7 @@ export default function RoomCard(props) {
                   className="d-flex flex-row flex-nowrap justify-content-between align-itmes-center"
                 >
                   <StudentModal student={student} />
-                  <i className="p-2 hover" onClick={() => LeaveRoom(student, room, students, setStudents, rooms, setRooms)}>
+                  <i className="p-2 hover" onClick={() => handleRemoveStudentFromRoom(student.id)}>
                     <FontAwesomeIcon icon={faCircleMinus} size="1x" />
                   </i>
                 </ListGroup.Item>

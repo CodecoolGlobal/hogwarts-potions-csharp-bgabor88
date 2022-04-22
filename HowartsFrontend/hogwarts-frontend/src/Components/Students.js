@@ -11,10 +11,6 @@ import { Typeahead } from "react-bootstrap-typeahead";
 export default function Students(props) {
   const { students, setStudents } = useContext(StudentsContext);
   const [selected, setSelected] = useState([]);
-  // let location = useLocation();
-  // // const { foo } = props.location.state;
-
-  // console.dir(location.state);
 
   const Content = () => {
     if (selected.length === 0) {

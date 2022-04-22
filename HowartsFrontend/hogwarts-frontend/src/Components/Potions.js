@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
 import { PotionsContext } from "../DAL/ContextProviders/PotionsContext";
-import { ListGroup, Card, Container, Collapse } from "react-bootstrap";
+import { Card, Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp, faAward, faClone, faFlaskVial } from "@fortawesome/free-solid-svg-icons";
-import "../App.css";
+import IngredientList from "./IngredientList";
 
 export default function Potions() {
   const { potions, setPotions } = useContext(PotionsContext);
@@ -47,18 +47,7 @@ export default function Potions() {
             </i>
           </Card.Header>
           <Card.Body>
-            <Collapse in={open === potion.id} className="ingredients">
-              <ListGroup>
-                {potion.usedIngredients.map((ingredient) => (
-                  <ListGroup.Item key={ingredient.id}>{ingredient.name}</ListGroup.Item>
-                ))}
-                <ListGroup.Item key="closeList" className="d-flex justify-content-center">
-                  <i title="Click to close the ingredients list" className="infoBtn" onClick={() => setOpen(null)}>
-                    <FontAwesomeIcon icon={faAngleUp} size="1x" />
-                  </i>
-                </ListGroup.Item>
-              </ListGroup>
-            </Collapse>
+            <IngredientList id={potion.id} ingredients={potion.usedIngredients} open={open} setOpen={setOpen} />
             <Card.Title>Owner: {potion.student.name}</Card.Title>
           </Card.Body>
         </Card>

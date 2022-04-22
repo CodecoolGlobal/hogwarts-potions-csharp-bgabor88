@@ -18,8 +18,8 @@ function App() {
   const [activePage, setActivePage] = useState(window.location.pathname.substring(1));
 
   return (
-    <StudentsProvider>
-      <RoomsProvider>
+    <RoomsProvider>
+      <StudentsProvider>
         <PotionsProvider>
           <RecipesProvider>
             <IngredientsProvider>
@@ -39,8 +39,8 @@ function App() {
             </IngredientsProvider>
           </RecipesProvider>
         </PotionsProvider>
-      </RoomsProvider>
-    </StudentsProvider>
+      </StudentsProvider>
+    </RoomsProvider>
   );
 }
 

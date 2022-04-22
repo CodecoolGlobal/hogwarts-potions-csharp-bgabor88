@@ -8,9 +8,8 @@ export const AddRoom = async (rooms, setRooms, capacity) => {
 
 export const DeleteRoom = async (rooms, setRooms, id) => {
   const updatedRooms = [...rooms];
-  await apiDelete(`room/${id}`).then(async (result) => {
-    await setRooms(updatedRooms.filter((room) => room.id !== id));
-  });
+  await apiDelete(`room/${id}`);
+  await setRooms(updatedRooms.filter((room) => room.id !== id));
 };
 
 export const RoomsContext = createContext();

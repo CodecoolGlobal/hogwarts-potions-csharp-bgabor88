@@ -16,23 +16,26 @@ async function apiPost(url, registrationData) {
     return await send.json();
 };
 
-async function apiPut(url, dataToUpdate) {
+async function apiPut(url) {
     const update = await fetch(url, {
         method: "PUT",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({name: dataToUpdate.name})
     });
-    return update;
+    return await update.json();
 };
 
 async function apiDelete(url) {
     const requestDelete = await fetch(url, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
     })
-    return await requestDelete.success;
+    return requestDelete;
 };
 
 export {apiGet, apiPost, apiPut, apiDelete};

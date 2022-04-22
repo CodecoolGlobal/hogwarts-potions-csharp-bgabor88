@@ -4,6 +4,7 @@ import { PotionsContext } from "../DAL/ContextProviders/PotionsContext";
 import { ListGroup, Card, Container, Collapse } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
+import IngredientList from "./IngredientList";
 
 export default function Recipes() {
   const { recipes } = useContext(RecipesContext);
@@ -31,18 +32,7 @@ export default function Recipes() {
               >
                 <FontAwesomeIcon icon={open === recipe.id ? faAngleUp : faAngleDown} size="1x" />
               </i>
-              <Collapse in={open === recipe.id} className="ingredients">
-                <ListGroup>
-                  {recipe.ingredients.map((ingredient) => (
-                    <ListGroup.Item key={ingredient.id}>{ingredient.name}</ListGroup.Item>
-                  ))}
-                  <ListGroup.Item key="closeList" className="d-flex justify-content-center">
-                    <i title="Click to close the ingredients list" className="infoBtn" onClick={() => setOpen(null)}>
-                      <FontAwesomeIcon icon={faAngleUp} size="1x" />
-                    </i>
-                  </ListGroup.Item>
-                </ListGroup>
-              </Collapse>
+              <IngredientList id={recipe.id} ingredients={recipe.ingredients} open={open} setOpen={setOpen} />
             </Card.Title>
             <Card.Title className="d-flex flex-nowrap justify-content-between flex-row p-2">
               Students who made this:

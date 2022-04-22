@@ -76,3 +76,13 @@
   color:red;
   transition: 1s ease-out;
 }
+
+.listBtn:hover {
+  cursor: pointer;
+}
+
+.hover:hover {
+  cursor: pointer;
+  color:red;
+  transition: 1s ease-out;
+}

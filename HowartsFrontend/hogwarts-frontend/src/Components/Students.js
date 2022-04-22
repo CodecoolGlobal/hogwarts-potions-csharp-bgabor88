@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+// import { useLocation } from "react-router-dom";
 import StudentData from "./StudentData";
 import { RegisterStudent } from "../DAL/RegistrationComponents";
 import { StudentsContext, DeleteStudent } from "../DAL/ContextProviders/StudentContext";
@@ -7,9 +8,13 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Form, Card } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 
-export default function Students() {
+export default function Students(props) {
   const { students, setStudents } = useContext(StudentsContext);
   const [selected, setSelected] = useState([]);
+  // let location = useLocation();
+  // // const { foo } = props.location.state;
+
+  // console.dir(location.state);
 
   const Content = () => {
     if (selected.length === 0) {

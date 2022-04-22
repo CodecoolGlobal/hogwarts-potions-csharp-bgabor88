@@ -13,7 +13,7 @@ export default function Rooms() {
       </div>
       <div className="col d-flex flex-row flex-wrap justify-content-center">
         {rooms.map((room) => (
-          <RoomCard room={room} />
+          <RoomCard room={room}  key={room.id}/>
         ))}
       </div>
     </div>

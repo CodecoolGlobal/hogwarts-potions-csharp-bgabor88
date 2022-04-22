@@ -3,7 +3,6 @@ import StudentModal from "./StudentModal";
 import { Card, Collapse, ListGroup } from "react-bootstrap";
 import { DeleteRoom, RoomsContext } from "../DAL/ContextProviders/RoomsContext";
 import { StudentsContext, AddToRoom, LeaveRoom } from "../DAL/ContextProviders/StudentContext";
-import { stateUpdater } from "../Utils/Utilities";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faAngleUp, faAngleDown, faPlus, faCircleMinus } from "@fortawesome/free-solid-svg-icons";
 

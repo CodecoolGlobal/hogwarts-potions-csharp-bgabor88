@@ -80,30 +80,28 @@ export default function Ingredients() {
   };
 
   return (
-    <div className="container">
-      <div className="row d-flex flex-row justify-content-center flex-nowrap">
-        <div className="col-auto">
-          <Card bg="info" key="Select-ingredient" text="dark" style={{ width: "17rem" }} className="p-2 mt-2">
-            <Card.Body className="p-0">
-              <Form.Group>
-                <Form.Label>Ingredients:</Form.Label>
-                <Typeahead
-                  id="ingredient-list"
-                  size="lg"
-                  labelKey="name"
-                  onChange={setSelected}
-                  options={ingredients}
-                  placeholder="Choose an ingredient..."
-                  selected={selected}
-                />
-              </Form.Group>
-            </Card.Body>
-          </Card>
-          <RegisterIngredient />
-        </div>
-        <div className="col">
-          <Content />
-        </div>
+    <div className="container row d-flex flex-row justify-content-center flex-nowrap">
+      <div className="col-auto">
+        <Card bg="info" key="Select-ingredient" text="dark" style={{ width: "17rem" }} className="p-2 mt-2">
+          <Card.Body className="p-0">
+            <Form.Group>
+              <Form.Label>Ingredients:</Form.Label>
+              <Typeahead
+                id="ingredient-list"
+                size="lg"
+                labelKey="name"
+                onChange={setSelected}
+                options={ingredients}
+                placeholder="Choose an ingredient..."
+                selected={selected}
+              />
+            </Form.Group>
+          </Card.Body>
+        </Card>
+        <RegisterIngredient />
+      </div>
+      <div className="col">
+        <Content />
       </div>
     </div>
   );

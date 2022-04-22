@@ -1,16 +1,19 @@
 import React, { useState, useEffect, createContext } from "react";
 import { apiGet, apiPost, apiPut, apiDelete } from "../CRUD";
+import { stateUpdater } from "../../Utils/Utilities";
 
-export const AddToRoom = async (studentId, roomId, students, setStudents, rooms, setRooms) => {
+export const AddToRoom = async (studentId, roomId, setStudents, setRooms) => {
   const updatedStudent = await apiPut(`/student/${studentId}/occupy/${roomId}`);
   const updatedRoom = await apiGet(`room/${roomId}`);
-  return { updatedStudent, updatedRoom };
+  stateUpdater(updatedStudent, setStudents);
+  stateUpdater(updatedRoom, setRooms);
 };
 
-export const LeaveRoom = async (studentId, room, students, setStudents, rooms, setRooms) => {
-  const updatedStudent = await apiPut(`/student/${studentId}/leave/${room}`);
-  const updatedRoom = await apiGet(`room/${room}`);
-  return { updatedStudent, updatedRoom };
+export const LeaveRoom = async (studentId, roomId, setStudents, setRooms) => {
+  const updatedStudent = await apiPut(`/student/${studentId}/leave/${roomId}`);
+  const updatedRoom = await apiGet(`room/${roomId}`);
+  stateUpdater(updatedStudent, setStudents);
+  stateUpdater(updatedRoom, setRooms);
 };
 
 export const AddStudent = async (students, setStudents, studentData) => {

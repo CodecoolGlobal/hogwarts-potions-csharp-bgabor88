@@ -7,7 +7,7 @@ export default function Rooms() {
   const { rooms } = useContext(RoomsContext);
 
   return (
-    <div className="container d-flex flex-row justify-content-center flex-nowrap">
+    <div className="container row d-flex flex-row justify-content-center flex-nowrap">
       <div className="col-auto">
         <RegisterRoom />
       </div>

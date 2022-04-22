@@ -13,9 +13,9 @@ export function RegisterRoom() {
   };
 
   return (
-    <Card bg="info" key="Add-Room" text="light" style={{ width: "18rem" }} className="mb-2 p-2 m-2">
-      <Card.Header>Add new room:</Card.Header>
-      <Card.Body>
+    <Card bg="info" key="Add-Room" text="dark" style={{ width: "17rem" }} className="p-2 mt-2">
+      <Card.Body className="p-0">
+        <Form.Label>Add new room:</Form.Label>
         <Form onSubmit={(e) => formHandler(e, e.target[0].value)}>
           <Form.Group className="mb-3">
             <Form.Control
@@ -90,19 +90,19 @@ export function RegisterStudent(props) {
 }
 
 export function RegisterIngredient() {
-    const { ingredients, setIngredients } = useContext(IngredientsContext);
+  const { setIngredients } = useContext(IngredientsContext);
 
-    const formHandler = (event) => {
+  const formHandler = (event) => {
     event.preventDefault();
     const ingredientData = {
       name: event.target[0].value,
     };
-    AddIngredient(ingredients, setIngredients, ingredientData).then(() => event.target.reset());
+    AddIngredient(setIngredients, ingredientData).then(() => event.target.reset());
   };
 
   return (
     <Card bg="info" key="Add-Ingredient" text="dark" style={{ width: "17rem" }} className="p-2 mt-2">
-      <Card.Body className="p-0">
+      <Card.Body className="mb-3">
         <Form onSubmit={(e) => formHandler(e, e.target[0].value)}>
           <Form.Label>Add new:</Form.Label>
           <Form.Group className="pt-1">

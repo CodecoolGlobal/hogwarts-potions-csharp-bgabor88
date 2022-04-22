@@ -3,9 +3,9 @@ import { apiGet, apiPost } from "../CRUD";
 
 export const IngredientsContext = createContext();
 
-export const AddIngredient = async (ingredients, setIngredients, ingredientData) => {
+export const AddIngredient = async (setIngredients, ingredientData) => {
   const newIngredient = await apiPost("/ingredient", ingredientData);
-  await setIngredients([...ingredients, newIngredient]);
+  await setIngredients(ingredients => [...ingredients, newIngredient]);
 };
 
 export const IngredientsProvider = (props) => {

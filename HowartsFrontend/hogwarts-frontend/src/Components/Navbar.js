@@ -6,7 +6,7 @@ function Navbar(props) {
   const Buttons = ["Rooms", "Students"];
 
   return (
-    <Navigation bg="dark" variant="dark">
+    <Navigation fixed="top" bg="dark" variant="dark">
       <Container>
         <Navigation.Brand>Hogwarts</Navigation.Brand>
         <Nav activeKey={props.getActive} className="me-auto">

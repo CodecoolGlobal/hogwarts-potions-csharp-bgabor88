@@ -33,14 +33,22 @@ function Navbar(props) {
             <Dropdown.Menu variant="dark">
               <Dropdown.Item>
                 <Link to="Recipes">
-                  <button type="button" className="navBtn mt-1 mb-1 btn btn-outline-warning">
+                  <button
+                    type="button"
+                    className="navBtn mt-1 mb-1 btn btn-outline-warning"
+                    onClick={() => props.setActive(null)}
+                  >
                     Recipes
                   </button>
                 </Link>
               </Dropdown.Item>
               <Dropdown.Item>
                 <Link to="Ingredients">
-                  <button type="button" className="navBtn mt-1 mb-1 btn btn-outline-warning">
+                  <button
+                    type="button"
+                    className="navBtn mt-1 mb-1 btn btn-outline-warning"
+                    onClick={() => props.setActive(null)}
+                  >
                     Ingredients
                   </button>
                 </Link>

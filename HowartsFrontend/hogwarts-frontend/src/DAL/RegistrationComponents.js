@@ -5,11 +5,11 @@ import { StudentsContext, AddStudent } from "../DAL/ContextProviders/StudentCont
 import { IngredientsContext, AddIngredient } from "../DAL/ContextProviders/IngredientsContext";
 
 export function RegisterRoom() {
-  const { rooms, setRooms } = useContext(RoomsContext);
+  const { setRooms } = useContext(RoomsContext);
 
-  const formHandler = (event, capacity) => {
+  const formHandler = async (event, capacity) => {
     event.preventDefault();
-    AddRoom(rooms, setRooms, capacity).then(() => event.target.reset());
+    await AddRoom(setRooms, capacity).then(() => event.target.reset());
   };
 
   return (
@@ -38,7 +38,7 @@ export function RegisterRoom() {
 }
 
 export function RegisterStudent(props) {
-  const { students, setStudents } = useContext(StudentsContext);
+  const { setStudents } = useContext(StudentsContext);
   const setSelected = props.setter;
   const houseTypes = ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"];
   const petTypes = ["None", "Cat", "Rat", "Owl"];
@@ -50,7 +50,7 @@ export function RegisterStudent(props) {
       houseType: houseTypes.indexOf(event.target[1].value),
       petType: petTypes.indexOf(event.target[2].value),
     };
-    await AddStudent(students, setStudents, userData).then((student) => {
+    await AddStudent(setStudents, userData).then((student) => {
       event.target.reset();
       setSelected([student]);
     });

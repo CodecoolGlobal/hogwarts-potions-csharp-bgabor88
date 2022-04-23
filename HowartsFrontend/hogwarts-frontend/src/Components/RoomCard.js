@@ -16,7 +16,7 @@ export default function RoomCard(props) {
   const isDisabledBtn = room.capacity === room.residents.length || studentsWithoutRoom.length === 0;
 
   return (
-    <Card bg="primary" key={room.id} text="light" style={{ width: "25rem" }} className="mb-2 p-2 m-2">
+    <Card bg="info" border="dark" key={room.id} text="dark" style={{ width: "25rem" }} className="mb-2 p-2 m-2">
       <Card.Header className="d-flex flex-nowrap justify-content-between flex-row">
         <div className="card-title">{`Room: ${room.id}`}</div>
         <div>
@@ -47,13 +47,13 @@ export default function RoomCard(props) {
           </Collapse>
           <FontAwesomeIcon
             title="Click to move a student in!"
-            className={`${isDisabledBtn ? "disabled" : ""} deleteBtn pr-3`}
+            className={`${isDisabledBtn ? "disabled" : ""} hover plusBtn pr-3`}
             onClick={() => setAddStudent(!addStudent)}
             icon={faPlus}
             size="1x"
           />
           <FontAwesomeIcon
-            className="deleteBtn"
+            className="deleteBtn hover"
             onClick={() => DeleteRoom(rooms, setRooms, room.id)}
             icon={faTrash}
             size="1x"

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, createContext, useContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import { apiDelete, apiGet, apiPost } from "../CRUD";
 
-export const AddRoom = async (rooms, setRooms, capacity) => {
+export const AddRoom = async (setRooms, capacity) => {
   const newRoom = await apiPost("/room", { capacity: capacity });
-  await setRooms([...rooms, newRoom]);
+  await setRooms(rooms => [...rooms, newRoom]);
 };
 
 export const DeleteRoom = async (rooms, setRooms, id) => {

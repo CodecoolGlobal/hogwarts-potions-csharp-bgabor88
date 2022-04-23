@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { RecipesContext } from "../DAL/ContextProviders/RecipesContext";
 import { IngredientsContext } from "../DAL/ContextProviders/IngredientsContext";
-import { ListGroup, Card, Collapse, Form } from "react-bootstrap";
+import { ListGroup, Card, Collapse } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import { Typeahead } from "react-bootstrap-typeahead";
@@ -23,7 +23,7 @@ export default function Ingredients() {
           className="d-flex flex-nowrap justify-content-center flex-column m-2"
         >
           <Card.Header className="d-flex flex-nowrap justify-content-center flex-row">
-            <p>Choose an ingredient to inspect!</p>
+            <p className="mb-0">Choose an ingredient to inspect!</p>
           </Card.Header>
         </Card>
       );
@@ -37,23 +37,25 @@ export default function Ingredients() {
         className="d-flex flex-nowrap justify-content-center flex-column m-2"
       >
         <Card.Header className="d-flex flex-nowrap justify-content-center flex-row">
-          <p>{ingredient.name}</p>
+          <p className="mb-0">{ingredient.name}</p>
         </Card.Header>
         <Card.Body>
-          <div>
-            {recipes.filter((r) => r.ingredients.some((i) => i.id === ingredient.id)).length === 0
-              ? "No recipes used this!"
-              : "Recipes using this ingredient:  "}
-            <i
+          <div className="d-flex justify-content-center flex-row flex-nowrap">
+            <p className="mb-0">
+              {recipes.filter((r) => r.ingredients.some((i) => i.id === ingredient.id)).length === 0
+                ? "No recipes used this!"
+                : "Recipes using this:"}
+            </p>
+            <FontAwesomeIcon
               hidden={
                 recipes.filter((r) => r.ingredients.some((i) => i.id === ingredient.id)).length === 0 ? true : false
               }
               title={open === ingredient.id ? "Click to close the recipes list" : "Click to open the recipes list"}
               className="infoBtn p-2"
               onClick={() => setOpen(open === ingredient.id ? null : ingredient.id)}
-            >
-              <FontAwesomeIcon icon={open === ingredient.id ? faAngleUp : faAngleDown} size="1x" />
-            </i>
+              icon={open === ingredient.id ? faAngleUp : faAngleDown}
+              size="1x"
+            />
           </div>
           <Collapse in={open === ingredient.id}>
             <ListGroup>
@@ -68,9 +70,7 @@ export default function Ingredients() {
                 onClick={() => setOpen(null)}
                 title="Click to close the recipes list"
               >
-                <i>
-                  <FontAwesomeIcon icon={faAngleUp} size="1x" />
-                </i>
+                <FontAwesomeIcon icon={faAngleUp} size="1x" />
               </ListGroup.Item>
             </ListGroup>
           </Collapse>
@@ -83,20 +83,16 @@ export default function Ingredients() {
     <div className="container row d-flex flex-row justify-content-center flex-nowrap">
       <div className="col-auto">
         <Card bg="info" key="Select-ingredient" text="dark" style={{ width: "17rem" }} className="p-2 mt-2">
-          <Card.Body className="p-0">
-            <Form.Group>
-              <Form.Label>Ingredients:</Form.Label>
-              <Typeahead
-                id="ingredient-list"
-                size="lg"
-                labelKey="name"
-                onChange={setSelected}
-                options={ingredients}
-                placeholder="Choose an ingredient..."
-                selected={selected}
-              />
-            </Form.Group>
-          </Card.Body>
+          Ingredients:
+          <Typeahead
+            id="ingredient-list"
+            size="lg"
+            labelKey="name"
+            onChange={setSelected}
+            options={ingredients}
+            placeholder="Choose an ingredient..."
+            selected={selected}
+          />
         </Card>
         <RegisterIngredient />
       </div>

@@ -6,7 +6,7 @@ import { faAngleDown, faAngleUp, faAward, faClone, faFlaskVial } from "@fortawes
 import IngredientList from "./IngredientList";
 
 export default function Potions() {
-  const { potions, setPotions } = useContext(PotionsContext);
+  const { potions } = useContext(PotionsContext);
   const [open, setOpen] = useState(null);
 
   const brewStatuses = ["Currently brewing", "Done! This is a Replica", "Done! This is a new Discovery"];

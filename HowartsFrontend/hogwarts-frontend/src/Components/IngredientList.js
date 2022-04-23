@@ -9,7 +9,7 @@ export default function IngredientList(props) {
   const setOpen = props.setOpen;
 
   return (
-    <Collapse in={open == props.id} className="ingredients">
+    <Collapse in={open === props.id} className="ingredients">
       <ListGroup>
         {ingredients.map((ingredient) => (
             <ListGroup.Item key={ingredient.id}>

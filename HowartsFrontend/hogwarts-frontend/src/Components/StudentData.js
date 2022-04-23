@@ -1,13 +1,9 @@
-import React, { useState, Collapse, ListGroup as div } from "react";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import React from "react";
 
 export default function StudentData(props) {
   const student = props.student;
   const houseTypes = ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"];
   const petTypes = ["None", "Cat", "Rat", "Owl"];
-  const [open, setOpen] = useState(false);
 
   return (
     <>

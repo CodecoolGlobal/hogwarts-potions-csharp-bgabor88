@@ -1,15 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Container, Nav } from "react-bootstrap";
-import NavBar from "react-bootstrap/Navbar";
+import { Navbar as Navigation, Container, Nav, Dropdown, Button } from "react-bootstrap";
 
 function Navbar(props) {
-  const Buttons = ["Rooms", "Students", "Potions", "Recipes", "Ingredients"];
+  const Buttons = ["Rooms", "Students"];
 
   return (
-    <NavBar fixed="top" bg="dark" variant="dark">
+    <Navigation bg="dark" variant="dark">
       <Container>
-        <NavBar.Brand>Hogwarts</NavBar.Brand>
+        <Navigation.Brand>Hogwarts</Navigation.Brand>
         <Nav activeKey={props.getActive} className="me-auto">
           {Buttons.map((button) => (
             <Link to={button} key={Buttons.indexOf(button)}>
@@ -24,9 +23,31 @@ function Navbar(props) {
               </button>
             </Link>
           ))}
+          <Dropdown>
+            <Dropdown.Toggle className="navBtn p-2 m-2 mt-0 mb-0" variant="outline-warning" id="dropdown-basic">
+              Catalogue
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu variant="dark">
+              <Dropdown.Item>
+                <Link to="Recipes">
+                  <button type="button" className="navBtn mt-1 mb-1 btn btn-outline-warning">
+                    Recipes
+                  </button>
+                </Link>
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Link to="Ingredients">
+                  <button type="button" className="navBtn mt-1 mb-1 btn btn-outline-warning">
+                    Ingredients
+                  </button>
+                </Link>
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </Nav>
       </Container>
-    </NavBar>
+    </Navigation>
   );
 }
 

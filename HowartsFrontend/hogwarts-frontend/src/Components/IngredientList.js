@@ -12,14 +12,16 @@ export default function IngredientList(props) {
     <Collapse in={open === props.id} className="ingredients">
       <ListGroup>
         {ingredients.map((ingredient) => (
-            <ListGroup.Item key={ingredient.id}>
-              {ingredient.name}
-            </ListGroup.Item>
-          ))}
+          <ListGroup.Item key={ingredient.id}>{ingredient.name}</ListGroup.Item>
+        ))}
         <ListGroup.Item key="closeList" className="d-flex justify-content-center">
-          <i title="Click to close" className="infoBtn" onClick={() => setOpen(false)}>
-            <FontAwesomeIcon icon={faAngleUp} size="1x" />
-          </i>
+          <FontAwesomeIcon
+            title="Click to close"
+            className="hover"
+            onClick={() => setOpen(false)}
+            icon={faAngleUp}
+            size="1x"
+          />
         </ListGroup.Item>
       </ListGroup>
     </Collapse>

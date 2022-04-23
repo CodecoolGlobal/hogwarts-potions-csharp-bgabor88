@@ -4,7 +4,6 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import Students from "./Components/Students";
 import Rooms from "./Components/Rooms";
-import Potions from "./Components/Potions";
 import Ingredients from "./Components/Ingredients";
 import Recipes from "./Components/Recipes";
 import { StudentsProvider } from "./DAL/ContextProviders/StudentContext";
@@ -28,7 +27,6 @@ function App() {
                 <div className="App-body">
                   <Routes>
                     <Route path="/Ingredients" element={<Ingredients />}></Route>
-                    <Route path="/Potions" element={<Potions />}></Route>
                     <Route path="/Recipes" element={<Recipes />}></Route>
                     <Route path="/Students" element={<Students />}></Route>
                     <Route path="/Rooms" element={<Rooms />}></Route>

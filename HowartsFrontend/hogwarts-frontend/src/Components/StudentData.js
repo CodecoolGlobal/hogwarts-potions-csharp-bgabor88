@@ -1,4 +1,5 @@
 import React from "react";
+import Potions from './Potions';
 
 export default function StudentData(props) {
   const student = props.student;
@@ -9,6 +10,7 @@ export default function StudentData(props) {
     <>
       <div >
         {`Potions: ${student.potions.length}`}
+        <Potions student={student} />
       </div>
       <div>{`Recipes: ${student.recipes.length}`}</div>
       <div>{`House: ${houseTypes[student.houseType]}`}</div>

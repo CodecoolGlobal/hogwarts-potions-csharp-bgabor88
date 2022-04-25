@@ -51,16 +51,18 @@ namespace HogwartsPotions.Controllers
         }
 
         [HttpPut("{studentId:long}/occupy/{roomId:long}")]
-        public async Task OccupyRoom(long studentId, long roomId)
+        public async Task<IActionResult> OccupyRoom(long studentId, long roomId)
         {
             var student = await _context.GetStudent(studentId);
             var room = await _context.GetRoom(roomId);
             if (student != null && room != null)
             {
                 student.Room = room;
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetStudentById", new { student.Id }, student);
             }
 
-            await _context.SaveChangesAsync();
+            return NoContent();
         }
 
         [HttpDelete("{id:long}")]
@@ -68,6 +70,21 @@ namespace HogwartsPotions.Controllers
         {
             await _context.DeleteStudent(id);
             await _context.SaveChangesAsync();
+        }
+
+        [HttpPut("{studentId:long}/leave/{roomId:long}")]
+        public async Task<IActionResult> LeaveRoom(long studentId, long roomId)
+        {
+            var student = await _context.GetStudent(studentId);
+            var room = await _context.GetRoom(roomId);
+            if (student != null && room != null)
+            {
+                room.Residents.Remove(student);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetStudentById", new { student.Id }, student);
+            }
+
+            return NoContent();
         }
     }
 }

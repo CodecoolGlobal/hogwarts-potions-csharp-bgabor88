@@ -33,7 +33,7 @@ Congrats! Now you can join to the potion brew masters and start practicing your 
 
 ## Authors
 
-* Project idea provided by: <>
+* Project idea provided by: <https://codecool.com>
 * Developer: <https://www.linkedin.com/in/gabor-balazs88/>
 
 ## Roadmap

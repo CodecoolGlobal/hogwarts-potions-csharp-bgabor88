@@ -15,11 +15,11 @@ This web application let you move between the walls of Hogwarts and start learni
 ### Installing
 
 * Download the repository, then in the root of the project, open a console and:
-* - Do a // dotnet build
-* - Then do a // dotner run
+* - Do a `dotnet build`
+* - Then do a `dotnet run`
 * After that you need to move into a fronted subfolder (where the react files in)
-* - open a console and // npm install
-* - When it finished you need to start with // npm start
+* - open a console and `npm install`
+* - When it finished you need to start with `npm start`
 
 Congrats! Now you can join to the potion brew masters and start practicing your skills.
 

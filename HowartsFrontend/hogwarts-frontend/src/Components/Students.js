@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import StudentData from "./StudentData";
-import { RegisterStudent } from "../DAL/RegistrationComponents";
 import { StudentsContext, DeleteStudent } from "../DAL/ContextProviders/StudentContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -66,7 +65,6 @@ export default function Students(props) {
             selected={selected}
           />
         </Card>
-        <RegisterStudent setter={setSelected} />
       </div>
       <div className="col">
         <Content />

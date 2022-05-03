@@ -39,7 +39,6 @@ export function RegisterRoom() {
 
 export function RegisterStudent(props) {
   const { setStudents } = useContext(StudentsContext);
-  const setSelected = props.setter;
   const houseTypes = ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"];
   const petTypes = ["None", "Cat", "Rat", "Owl"];
 
@@ -47,22 +46,24 @@ export function RegisterStudent(props) {
     event.preventDefault();
     const userData = {
       name: event.target[0].value,
-      houseType: houseTypes.indexOf(event.target[1].value),
-      petType: petTypes.indexOf(event.target[2].value),
+      password: event.target[1].value,
+      houseType: houseTypes.indexOf(event.target[2].value),
+      petType: petTypes.indexOf(event.target[3].value),
     };
     await AddStudent(setStudents, userData).then((student) => {
       event.target.reset();
-      setSelected([student]);
+      props.setShow(show => !show);
+      props.setLogin(login => !login);
     });
   };
 
   return (
-    <Card bg="info" key="Add-Student" text="dark" style={{ width: "17rem" }} className="p-2 mt-2">
+    <Card bg="info" key="Add-Student" text="dark" style={{ width: "100%" }} className="p-2 mt-2">
       <Card.Body className="p-0">
-        <Form.Label>Add new:</Form.Label>
         <Form onSubmit={(e) => formHandler(e)}>
           <Form.Group className="mb-3">
             <Form.Control required min="2" size="sm" type="text" id="studentName" placeholder="Student name" />
+            <Form.Control required min="6" size="sm" type="password" id="studentPass" placeholder="Password" />
             <Form.Select required size="sm">
               <option key="defaultHouse" value="" hidden default>
                 Choose House type

@@ -118,6 +118,9 @@ namespace HogwartsPotions.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte>("PetType")
                         .HasColumnType("tinyint");
 

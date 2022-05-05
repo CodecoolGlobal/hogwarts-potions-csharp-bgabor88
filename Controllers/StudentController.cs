@@ -2,89 +2,86 @@
 using System.Threading.Tasks;
 using HogwartsPotions.Models;
 using HogwartsPotions.Models.Entities;
+using HogwartsPotions.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HogwartsPotions.Controllers
+namespace HogwartsPotions.Controllers;
+
+[ApiController, Route("/[controller]")]
+public class StudentController : ControllerBase
 {
-    [ApiController, Route("/[controller]")]
-    public class StudentController : ControllerBase
+    private readonly IStudentRepository _studentRepository;
+    private readonly IRoomRepository _roomRepository;
+
+    public StudentController(IStudentRepository studentRepository, IRoomRepository roomRepository)
     {
-        private readonly HogwartsContext _context;
+        _studentRepository = studentRepository;
+        _roomRepository = roomRepository;
+    }
 
-        public StudentController(HogwartsContext context)
-        {
-            _context = context;
-        }
+    [HttpGet("{studentId:long}/potions")]
+    public async Task<List<Potion>> GetPotionsByStudent(long studentId)
+    {
+        return await _studentRepository.GetAllPotionsByStudent(await _studentRepository.GetStudent(studentId));
+    }
 
-        [HttpGet("{studentId:long}/potions")]
-        public async Task<List<Potion>> GetPotionsByStudent(long studentId)
-        {
-            return await _context.GetAllPotionsByStudent(await _context.GetStudent(studentId));
-        }
+    [HttpGet]
+    public async Task<List<Student>> GetAllStudents()
+    {
+        return await _studentRepository.GetAllStudent();
+    }
 
-        [HttpGet]
-        public async Task<List<Student>> GetAllStudents()
-        {
-            return await _context.GetAllStudent();
-        }
+    [HttpPost]
+    public async Task<IActionResult> AddStudent([FromBody] Student student)
+    {
+        await _studentRepository.AddStudent(student);
+        return CreatedAtAction("GetStudentById", new { student.Id }, student);
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> AddStudent([FromBody] Student student)
+    [HttpGet("{id:long}")]
+    public async Task<Student> GetStudentById(long id)
+    {
+        return await _studentRepository.GetStudent(id);
+    }
+
+    [HttpPut("{id:long}")]
+    public async Task UpdateStudentById(long id, [FromBody] Student updatedStudent)
+    {
+        updatedStudent.Id = id;
+        await _studentRepository.UpdateStudent(updatedStudent);
+    }
+
+    [HttpPut("{studentId:long}/occupy/{roomId:long}")]
+    public async Task<IActionResult> OccupyRoom(long studentId, long roomId)
+    {
+        var student = await _studentRepository.GetStudent(studentId);
+        var room = await _roomRepository.GetRoom(roomId);
+        if (student != null && room != null)
         {
-            await _context.AddStudent(student);
-            await _context.SaveChangesAsync();
+            student.Room = room;
             return CreatedAtAction("GetStudentById", new { student.Id }, student);
         }
 
-        [HttpGet("{id:long}")]
-        public async Task<Student> GetStudentById(long id)
+        return NoContent();
+    }
+
+    [HttpDelete("{id:long}")]
+    public async Task DeleteStudentById(long id)
+    {
+        await _studentRepository.DeleteStudent(id);
+    }
+
+    [HttpPut("{studentId:long}/leave/{roomId:long}")]
+    public async Task<IActionResult> LeaveRoom(long studentId, long roomId)
+    {
+        var student = await _studentRepository.GetStudent(studentId);
+        var room = await _roomRepository.GetRoom(roomId);
+        if (student != null && room != null)
         {
-            return await _context.GetStudent(id);
+            room.Residents.Remove(student);
+            return CreatedAtAction("GetStudentById", new { student.Id }, student);
         }
 
-        [HttpPut("{id:long}")]
-        public async Task UpdateStudentById(long id, [FromBody] Student updatedStudent)
-        {
-            updatedStudent.Id = id;
-            await _context.UpdateStudent(updatedStudent);
-            await _context.SaveChangesAsync();
-        }
-
-        [HttpPut("{studentId:long}/occupy/{roomId:long}")]
-        public async Task<IActionResult> OccupyRoom(long studentId, long roomId)
-        {
-            var student = await _context.GetStudent(studentId);
-            var room = await _context.GetRoom(roomId);
-            if (student != null && room != null)
-            {
-                student.Room = room;
-                await _context.SaveChangesAsync();
-                return CreatedAtAction("GetStudentById", new { student.Id }, student);
-            }
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id:long}")]
-        public async Task DeleteStudentById(long id)
-        {
-            await _context.DeleteStudent(id);
-            await _context.SaveChangesAsync();
-        }
-
-        [HttpPut("{studentId:long}/leave/{roomId:long}")]
-        public async Task<IActionResult> LeaveRoom(long studentId, long roomId)
-        {
-            var student = await _context.GetStudent(studentId);
-            var room = await _context.GetRoom(roomId);
-            if (student != null && room != null)
-            {
-                room.Residents.Remove(student);
-                await _context.SaveChangesAsync();
-                return CreatedAtAction("GetStudentById", new { student.Id }, student);
-            }
-
-            return NoContent();
-        }
+        return NoContent();
     }
 }

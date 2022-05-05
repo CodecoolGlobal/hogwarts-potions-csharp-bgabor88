@@ -141,52 +141,6 @@ public class HogwartsContext : DbContext
 
     #endregion
 
-    #region StudentOperations
-    public Task<List<Student>> GetAllStudent()
-    {
-        return Task.Run(() => Students
-            .Include(s => s.Room)
-            .Include(s => s.Recipes)
-            .Include(s => s.Potions)
-            .ToListAsync());
-    }
-    public Task<List<Potion>> GetAllPotionsByStudent(Student student)
-    {
-        return Task.Run(() => Potions
-            .Where(p => p.Student == student)
-            .ToListAsync());
-    }
-
-    public async Task AddStudent(Student student)
-    {
-        await Task.Run(() => Students.Add(student));
-    }
-
-    public Task<Student> GetStudent(long id)
-    {
-        return Task.Run(() => Students
-            .Include(s => s.Room)
-            .Include(s => s.Potions)
-            .Include(s => s.Recipes)
-            .FirstOrDefaultAsync(student => student.Id == id));
-    }
-
-    public Task UpdateStudent(Student updatedStudent)
-    {
-        return Task.Run(() => Students.Update(updatedStudent));
-    }
-
-    public async Task DeleteStudent(long id)
-    {
-        var studentToDelete = await GetStudent(id);
-        if (studentToDelete != null)
-        {
-            Students.Remove(studentToDelete);
-        }
-    }
-
-    #endregion
-
     #region IngredientOperations
 
     public Task<List<Ingredient>> GetAllIngredients()

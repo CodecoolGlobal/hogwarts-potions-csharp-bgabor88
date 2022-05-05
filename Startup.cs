@@ -30,6 +30,9 @@ public class Startup
             .AddJsonOptions(opt => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
         services.AddScoped<IStudentRepository, StudentRepository>();
         services.AddScoped<IRoomRepository, RoomRepository>();
+        services.AddScoped<IPotionRepository, PotionRepository>();
+        services.AddScoped<IRecipeRepository, RecipeRepository>();
+        services.AddScoped<IIngredientRepository, IngredientRepository>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

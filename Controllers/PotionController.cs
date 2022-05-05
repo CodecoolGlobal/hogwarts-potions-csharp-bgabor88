@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HogwartsPotions.Models;
 using HogwartsPotions.Models.Entities;
+using HogwartsPotions.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HogwartsPotions.Controllers;
@@ -10,11 +11,20 @@ namespace HogwartsPotions.Controllers;
 [ApiController, Route("/[controller]")]
 public class PotionController : ControllerBase
 {
-    private readonly HogwartsContext _context;
+    private readonly IPotionRepository _potionRepository;
+    private readonly IRecipeRepository _recipeRepository;
+    private readonly IStudentRepository _studentRepository;
+    private IIngredientRepository _ingredientRepository;
 
-    public PotionController(HogwartsContext context)
+    public PotionController(IPotionRepository potionRepository, 
+        IRecipeRepository recipeRepository, 
+        IStudentRepository studentRepository, 
+        IIngredientRepository ingredientRepository)
     {
-        _context = context;
+        _potionRepository = potionRepository;
+        _recipeRepository = recipeRepository;
+        _studentRepository = studentRepository;
+        _ingredientRepository = ingredientRepository;
     }
 
     #region Get Requests
@@ -22,22 +32,22 @@ public class PotionController : ControllerBase
     [HttpGet]
     public async Task<List<Potion>> GetAllPotions()
     {
-        return await _context.GetAllPotions();
+        return await _potionRepository.GetAllPotions();
     }
 
     [HttpGet("{id:long}")]
     public async Task<Potion> GetPotionById(long id)
     {
-        return await _context.GetPotion(id);
+        return await _potionRepository.GetPotion(id);
     }
 
     [HttpGet("{potionId:long}/help")]
     public async Task<List<Recipe>> GetRecipesByIngredients(long potionId)
     {
-        var potion = await _context.GetPotion(potionId);
+        var potion = await _potionRepository.GetPotion(potionId);
         if (potion.UsedIngredients.Count < 5)
         {
-            return await _context.GetRecipesByIngredients(potion.UsedIngredients);
+            return await _recipeRepository.GetRecipesByIngredients(potion.UsedIngredients);
         }
 
         return await Task.FromCanceled<List<Recipe>>(new CancellationToken(true));
@@ -50,12 +60,11 @@ public class PotionController : ControllerBase
     [HttpPost("{studentId:long}")]
     public async Task<Potion> AddPotion(long studentId, [FromBody] Potion potion)
     {
-        var student = await _context.GetStudent(studentId);
+        var student = await _studentRepository.GetStudent(studentId);
         if (student != null)
         {
             potion.Student = student;
-            await _context.AddPotion(potion);
-            await _context.SaveChangesAsync();
+            _potionRepository.AddPotion(potion);
         }
 
         return await Task.Run(() => potion);
@@ -68,10 +77,10 @@ public class PotionController : ControllerBase
     [HttpPut("{potionId:long}/add-ingredient")]
     public async Task<Potion> AddIngredientToPotion(long potionId, [FromBody] Ingredient ingredient)
     {
-        var potion = await _context.GetPotion(potionId);
-
-        await _context.AddIngredient(ingredient);
-        await _context.ModifyPotion(potion, ingredient);
+        var potion = await _potionRepository.GetPotion(potionId);
+        
+        _ingredientRepository.AddIngredient(ingredient);
+        await _potionRepository.ModifyPotion(potion, ingredient);
 
         return await Task.Run(() => potion);
     }
@@ -79,10 +88,10 @@ public class PotionController : ControllerBase
     [HttpPut("{potionId:long}/add-ingredient/{ingredientId:long}")]
     public async Task<Potion> AddIngredientToPotion(long potionId, long ingredientId)
     {
-        var potion = await _context.GetPotion(potionId);
-        var ingredient = await _context.GetIngredient(ingredientId);
+        var potion = await _potionRepository.GetPotion(potionId);
+        var ingredient = await _ingredientRepository.GetIngredient(ingredientId);
 
-        await _context.ModifyPotion(potion, ingredient);
+        await _potionRepository.ModifyPotion(potion, ingredient);
 
         return await Task.Run(() => potion);
     }
@@ -94,8 +103,7 @@ public class PotionController : ControllerBase
     [HttpDelete("{id:long}")]
     public async Task DeletePotionById(long id)
     {
-        await _context.DeletePotion(id);
-        await _context.SaveChangesAsync();
+        await _potionRepository.DeletePotion(id);
     }
 
     #endregion

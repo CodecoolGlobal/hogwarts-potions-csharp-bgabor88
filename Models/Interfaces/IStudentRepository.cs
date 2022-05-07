@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HogwartsPotions.Models.AuthenticationEntities;
 using HogwartsPotions.Models.Entities;
 
 namespace HogwartsPotions.Models.Interfaces;
@@ -12,4 +13,5 @@ public interface IStudentRepository
     public Task<Student> GetStudent(long id);
     public Task<Student> UpdateStudent(Student updatedStudent);
     public Task DeleteStudent(long id);
+    AuthenticateResponse Authenticate(AuthenticateRequest model);
 }

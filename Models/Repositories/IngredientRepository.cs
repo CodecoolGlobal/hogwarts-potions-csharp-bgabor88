@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HogwartsPotions.Models.Entities;
+using HogwartsPotions.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace HogwartsPotions.Models.Interfaces;
+namespace HogwartsPotions.Models.Repositories;
 
 public class IngredientRepository : IIngredientRepository
 {
@@ -48,5 +49,4 @@ public class IngredientRepository : IIngredientRepository
             Context.SaveChangesAsync();
         }
     }
-
 }

@@ -1,3 +1,4 @@
+using HogwartsPotions.Models.AuthenticationEntities;
 using HogwartsPotions.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +14,7 @@ public class HogwartsContext : DbContext
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<Student> Students { get; set; }
     public DbSet<Recipe> Recipes { get; set; }
-
+    public DbSet<UserLoginData> UserLoginDatas { get; set; }
 
     #endregion
 
@@ -28,8 +29,13 @@ public class HogwartsContext : DbContext
     #region ModelCreation
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Student>()
+            .HasOne(u => u.UserLoginData)
+            .WithOne(d => d.Student)
+            .HasForeignKey<UserLoginData>(d => d.StudentId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
     #endregion
-    
+
 }

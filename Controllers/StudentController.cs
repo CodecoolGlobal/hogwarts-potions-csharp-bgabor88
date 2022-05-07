@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HogwartsPotions.Models;
+using HogwartsPotions.Models.AuthenticationEntities;
 using HogwartsPotions.Models.Entities;
 using HogwartsPotions.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +20,17 @@ public class StudentController : ControllerBase
         _roomRepository = roomRepository;
     }
 
+
+    [HttpPost("authenticate")]
+    public IActionResult Authenticate(AuthenticateRequest model)
+    {
+        var response = _studentRepository.Authenticate(model);
+        if (response == null)
+            return BadRequest(new { message = "Username or password is incorrect" });
+        return Ok(response);
+    }
+
+
     [HttpGet("{studentId:long}/potions")]
     public async Task<List<Potion>> GetPotionsByStudent(long studentId)
     {
@@ -31,8 +44,11 @@ public class StudentController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddStudent([FromBody] Student student)
+    public async Task<IActionResult> AddStudent([FromBody] RegisterModel model)
     {
+        var student = new Student {Name = model.Name};
+        var studentLoginData = new UserLoginData { Password = model.Password, Student = student };
+        student.UserLoginData = studentLoginData;
         await _studentRepository.AddStudent(student);
         return CreatedAtAction("GetStudentById", new { student.Id }, student);
     }

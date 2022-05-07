@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using HogwartsPotions.Helper;
 using HogwartsPotions.Models;
 using HogwartsPotions.Models.Interfaces;
 using HogwartsPotions.Models.Repositories;
@@ -23,6 +24,9 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+        services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+        services.AddCors();
         services.AddDbContext<HogwartsContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -36,10 +40,14 @@ public class Startup
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, HogwartsContext context)
     {
         if (env.IsDevelopment())
         {
+            if (!context.Database.EnsureCreated())
+            {
+                context.Database.Migrate();
+            }
             app.UseDeveloperExceptionPage();
         }
         else
@@ -48,12 +56,24 @@ public class Startup
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+
+        app.UseCors(op =>
+        {
+            op.WithOrigins("http://localhost:3000/")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin();
+        });
+
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 
         app.UseRouting();
 
+
         app.UseAuthorization();
+
+        app.UseMiddleware<JwtMiddleware>();
 
         app.UseEndpoints(endpoints =>
         {

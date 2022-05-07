@@ -4,6 +4,7 @@ using HogwartsPotions.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HogwartsPotions.Migrations
 {
     [DbContext(typeof(HogwartsContext))]
-    partial class HogwartsContextModelSnapshot : ModelSnapshot
+    [Migration("20220506114524_Student-Login-Data-Table")]
+    partial class StudentLoginDataTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,9 +40,7 @@ namespace HogwartsPotions.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StudentId")
-                        .IsUnique()
-                        .HasFilter("[StudentId] IS NOT NULL");
+                    b.HasIndex("StudentId");
 
                     b.ToTable("UserLoginDatas");
                 });
@@ -141,13 +141,13 @@ namespace HogwartsPotions.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte>("PetType")
                         .HasColumnType("tinyint");
 
                     b.Property<long?>("RoomId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("UserLoginDataId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -190,9 +190,8 @@ namespace HogwartsPotions.Migrations
             modelBuilder.Entity("HogwartsPotions.Models.AuthenticationEntities.UserLoginData", b =>
                 {
                     b.HasOne("HogwartsPotions.Models.Entities.Student", "Student")
-                        .WithOne("UserLoginData")
-                        .HasForeignKey("HogwartsPotions.Models.AuthenticationEntities.UserLoginData", "StudentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("StudentId");
 
                     b.Navigation("Student");
                 });
@@ -270,8 +269,6 @@ namespace HogwartsPotions.Migrations
                     b.Navigation("Potions");
 
                     b.Navigation("Recipes");
-
-                    b.Navigation("UserLoginData");
                 });
 #pragma warning restore 612, 618
         }

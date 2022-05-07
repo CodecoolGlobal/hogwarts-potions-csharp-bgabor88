@@ -20,8 +20,7 @@ public class StudentController : ControllerBase
         _roomRepository = roomRepository;
     }
 
-
-    [HttpPost("authenticate")]
+    [HttpPost("login")]
     public IActionResult Authenticate(AuthenticateRequest model)
     {
         var response = _studentRepository.Authenticate(model);
@@ -30,20 +29,21 @@ public class StudentController : ControllerBase
         return Ok(response);
     }
 
-
+    [Helper.Authorize]
     [HttpGet("{studentId:long}/potions")]
     public async Task<List<Potion>> GetPotionsByStudent(long studentId)
     {
         return await _studentRepository.GetAllPotionsByStudent(await _studentRepository.GetStudent(studentId));
     }
 
+    [Helper.Authorize]
     [HttpGet]
     public async Task<List<Student>> GetAllStudents()
     {
         return await _studentRepository.GetAllStudent();
     }
 
-    [HttpPost]
+    [HttpPost("register")]
     public async Task<IActionResult> AddStudent([FromBody] RegisterModel model)
     {
         var student = new Student {Name = model.Name};
@@ -53,12 +53,14 @@ public class StudentController : ControllerBase
         return CreatedAtAction("GetStudentById", new { student.Id }, student);
     }
 
+    [Helper.Authorize]
     [HttpGet("{id:long}")]
     public async Task<Student> GetStudentById(long id)
     {
         return await _studentRepository.GetStudent(id);
     }
 
+    [Helper.Authorize]
     [HttpPut("{id:long}")]
     public async Task UpdateStudentById(long id, [FromBody] Student updatedStudent)
     {
@@ -66,6 +68,7 @@ public class StudentController : ControllerBase
         await _studentRepository.UpdateStudent(updatedStudent);
     }
 
+    [Helper.Authorize]
     [HttpPut("{studentId:long}/occupy/{roomId:long}")]
     public async Task<IActionResult> OccupyRoom(long studentId, long roomId)
     {
@@ -80,12 +83,14 @@ public class StudentController : ControllerBase
         return NoContent();
     }
 
+    [Helper.Authorize]
     [HttpDelete("{id:long}")]
     public async Task DeleteStudentById(long id)
     {
         await _studentRepository.DeleteStudent(id);
     }
 
+    [Helper.Authorize]
     [HttpPut("{studentId:long}/leave/{roomId:long}")]
     public async Task<IActionResult> LeaveRoom(long studentId, long roomId)
     {

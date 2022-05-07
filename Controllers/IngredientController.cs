@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HogwartsPotions.Controllers;
 
+[Helper.Authorize]
 [ApiController, Route("/[controller]")]
 public class IngredientController : ControllerBase
 {

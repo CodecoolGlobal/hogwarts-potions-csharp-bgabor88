@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal } from "react-bootstrap";
-import { RegisterStudent } from "../../DAL/RegistrationComponents";
+import { RegisterStudent } from "./RegisterArea";
 
 export default function RegistrationModal(props) {
   return (

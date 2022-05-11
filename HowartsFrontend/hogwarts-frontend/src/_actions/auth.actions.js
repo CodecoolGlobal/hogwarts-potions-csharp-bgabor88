@@ -18,11 +18,8 @@ function useAuthActions() {
     logout
   };
 
-  function register(email, password) {
-    return fetchWrapper.post(`${baseUrl}/register`, { email, password }).then((user) => {
-      history.push("/login");
-      navigate("/login");
-    });
+  function register(studentData) {
+    return fetchWrapper.post(`${baseUrl}/register`, studentData);
   }
 
   function login(email, password) {

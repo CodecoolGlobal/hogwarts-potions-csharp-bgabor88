@@ -7,7 +7,7 @@ import { Card } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { useStudentActions } from "../_actions/student.actions";
 
-export default function Students(props) {
+export default function Students() {
   const { students, setStudents } = useContext(StudentsContext);
   const [selected, setSelected] = useState([]);
   const studentActions = useStudentActions();

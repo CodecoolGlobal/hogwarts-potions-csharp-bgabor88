@@ -75,11 +75,10 @@ public class StudentController : ControllerBase
     [HttpPut("{studentId:long}/occupy/{roomId:long}")]
     public async Task<IActionResult> OccupyRoom(long studentId, long roomId)
     {
-        var student = await _studentRepository.GetStudent(studentId);
         var room = await _roomRepository.GetRoom(roomId);
+        var student = await _studentRepository.OccupyRoom(studentId, room);
         if (student != null && room != null)
         {
-            student.Room = room;
             return CreatedAtAction("GetStudentById", new {student.Id}, student);
         }
 

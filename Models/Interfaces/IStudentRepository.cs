@@ -14,4 +14,5 @@ public interface IStudentRepository
     public Task<Student> UpdateStudent(Student updatedStudent);
     public Task DeleteStudent(long id);
     AuthenticateResponse Authenticate(AuthenticateRequest model);
+    Task<Student> OccupyRoom(long studentId, Room room);
 }

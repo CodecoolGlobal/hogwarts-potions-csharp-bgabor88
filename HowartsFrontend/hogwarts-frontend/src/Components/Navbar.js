@@ -1,52 +1,13 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { Navbar as Navigation, Container, Nav, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import RegistrationModal from "./RegistrationModal";
-import { StudentsContext } from "../DAL/ContextProviders/StudentContext";
-import LoginModal from "./LoginModal";
+import { useUserActions } from "../_actions/user.actions";
 
 function Navbar(props) {
   const Buttons = ["Rooms", "Students"];
-  const [regModal, setRegModal] = useState(false);
-  const [loginModal, setLoginModal] = useState(false);
-  const { login, setLogin } = useContext(StudentsContext);
-
-  const MyButtons = () => {
-    if (login) {
-      return (
-        <Dropdown.Item>
-          <button disabled type="button" className="navBtn mt-1 mb-1 btn btn-outline-warning">
-            Logout
-          </button>
-        </Dropdown.Item>
-      );
-    } else {
-      return (
-        <>
-          <Dropdown.Item>
-            <button
-              type="button"
-              className="navBtn mt-1 mb-1 btn btn-outline-warning"
-              onClick={() => setLoginModal(!loginModal)}
-            >
-              Login
-            </button>
-          </Dropdown.Item>
-          <Dropdown.Item>
-            <button
-              type="button"
-              className="navBtn mt-1 mb-1 btn btn-outline-warning"
-              onClick={() => setRegModal(!regModal)}
-            >
-              Register
-            </button>
-          </Dropdown.Item>
-        </>
-      );
-    }
-  };
+  const userActions = useUserActions();
 
   return (
     <>
@@ -104,12 +65,14 @@ function Navbar(props) {
             <FontAwesomeIcon icon={faUser} />
           </Dropdown.Toggle>
           <Dropdown.Menu variant="dark">
-            <MyButtons />
+            <Dropdown.Item>
+              <button onClick={userActions.logout} type="button" className="navBtn mt-1 mb-1 btn btn-outline-warning">
+                Logout
+              </button>
+            </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </Navigation>
-      <RegistrationModal show={regModal} setShow={setRegModal} setLogin={setLoginModal} />
-      <LoginModal show={loginModal} setShow={setLoginModal} setLogin={setLoginModal}/>
     </>
   );
 }

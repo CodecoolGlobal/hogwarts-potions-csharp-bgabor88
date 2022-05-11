@@ -22,11 +22,7 @@ function App() {
   const auth = useRecoilValue(authAtom);
   if (!auth) {
     history.push("/");
-    return (
-      <StudentsProvider>
-        <Landing />
-      </StudentsProvider>
-    );
+    return <Landing />;
   } else {
     history.push("/Rooms");
     return (

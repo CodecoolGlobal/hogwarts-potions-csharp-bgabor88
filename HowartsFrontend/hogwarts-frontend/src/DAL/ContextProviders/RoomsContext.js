@@ -22,9 +22,9 @@ export const RoomsProvider = (props) => {
   const [rooms, setRooms] = useState([]);
   const fetchWrapper = useFetchWrapper();
   useEffect(() => {
-    const fetchData = () => {
+    const fetchData = async () => {
       try {
-        const data = fetchWrapper.get("/room");
+        const data = await fetchWrapper.get("/room");
         setRooms([...data]);
       } catch (error) {
         console.log("error", error);

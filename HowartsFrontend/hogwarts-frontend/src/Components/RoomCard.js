@@ -1,13 +1,15 @@
 import React, { useState, useContext } from "react";
 import StudentModal from "./StudentModal";
 import { Card, Collapse, ListGroup } from "react-bootstrap";
-import { DeleteRoom, RoomsContext } from "../DAL/ContextProviders/RoomsContext";
+import { RoomsContext } from "../DAL/ContextProviders/RoomsContext";
 import { StudentsContext, AddToRoom, LeaveRoom } from "../DAL/ContextProviders/StudentContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faAngleUp, faAngleDown, faPlus, faCircleMinus } from "@fortawesome/free-solid-svg-icons";
+import { useRoomActions } from "../_actions/room.actions";
 
 export default function RoomCard(props) {
-  const { rooms, setRooms } = useContext(RoomsContext);
+  const { setRooms } = useContext(RoomsContext);
+  const roomActions = useRoomActions();
   const { students, setStudents } = useContext(StudentsContext);
   const [open, setOpen] = useState(null);
   const [addStudent, setAddStudent] = useState(false);
@@ -54,7 +56,7 @@ export default function RoomCard(props) {
           />
           <FontAwesomeIcon
             className="deleteBtn hover"
-            onClick={() => DeleteRoom(rooms, setRooms, room.id)}
+            onClick={() => roomActions.remove(room.id, setRooms)}
             icon={faTrash}
             size="1x"
           />

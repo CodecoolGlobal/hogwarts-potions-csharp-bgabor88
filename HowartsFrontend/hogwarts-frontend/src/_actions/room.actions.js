@@ -17,7 +17,9 @@ function useRoomActions() {
     });
   }
 
-  function remove(id) {
-    
+  function remove(id, setRooms) {
+    fetchWrapper.delete(`${baseUrl}/${id}`).then(() => {
+      setRooms((rooms) => rooms.filter((room) => room.id !== id));
+    });
   }
 }

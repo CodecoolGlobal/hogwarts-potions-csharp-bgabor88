@@ -1,14 +1,16 @@
 import React, { useContext, useState } from "react";
 import StudentData from "./StudentData";
-import { StudentsContext, DeleteStudent } from "../DAL/ContextProviders/StudentContext";
+import { StudentsContext } from "../DAL/ContextProviders/StudentContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Card } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
+import { useStudentActions } from "../_actions/student.actions";
 
 export default function Students(props) {
   const { students, setStudents } = useContext(StudentsContext);
   const [selected, setSelected] = useState([]);
+  const studentActions = useStudentActions();
 
   const Content = () => {
     if (selected.length === 0) {
@@ -38,7 +40,7 @@ export default function Students(props) {
           <FontAwesomeIcon
             className="hover deleteBtn"
             onClick={() => {
-              DeleteStudent(students, setStudents, student.id);
+              studentActions.remove(student.id, setStudents);
               setSelected([]);
             }}
             icon={faTrash}

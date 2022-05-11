@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createContext } from "react";
-import { apiGet, apiPost, apiPut, apiDelete } from "../CRUD";
+import { apiGet, apiPost, apiPut } from "../CRUD";
+import { useStudentActions } from "../../_actions/student.actions";
 
 export const AddToRoom = async (studentId, roomId, setStudents, setRooms) => {
   const updatedStudent = await apiPut(`/student/${studentId}/occupy/${roomId}`);
@@ -21,25 +22,15 @@ export const AddStudent = async (setStudents, studentData) => {
   return newStudent;
 };
 
-export const DeleteStudent = async (students, setStudents, id) => {
-  const updatedstudents = [...students];
-  await apiDelete(`student/${id}`).then(async () => {
-    await setStudents(updatedstudents.filter((student) => student.id !== id));
-  });
-};
-
-export const LoginStudent = async (setLogin, studentData) => {
-  const response = await apiPost(`login`, studentData);
-};
-
 export const StudentsContext = createContext();
 
 export const StudentsProvider = (props) => {
   const [students, setStudents] = useState([]);
+  const studentActions = useStudentActions();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await apiGet("/student");
+        const data = await studentActions.getStudents();
         setStudents([...data]);
       } catch (error) {
         console.log("error", error);

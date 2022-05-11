@@ -96,11 +96,10 @@ public class StudentController : ControllerBase
     [HttpPut("{studentId:long}/leave/{roomId:long}")]
     public async Task<IActionResult> LeaveRoom(long studentId, long roomId)
     {
-        var student = await _studentRepository.GetStudent(studentId);
         var room = await _roomRepository.GetRoom(roomId);
+        var student = await _studentRepository.LeaveRoom(studentId, room);
         if (student != null && room != null)
         {
-            room.Residents.Remove(student);
             return CreatedAtAction("GetStudentById", new {student.Id}, student);
         }
 

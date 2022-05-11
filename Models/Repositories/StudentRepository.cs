@@ -104,6 +104,19 @@ public class StudentRepository : IStudentRepository
         return student;
     }
 
+    public async Task<Student> LeaveRoom(long studentId, Room room)
+    {
+        var student = await GetStudent(studentId);
+        if (student != null && room != null)
+        {
+            student.Room = null;
+            room.Residents.Remove(student);
+            await _context.SaveChangesAsync();
+        }
+
+        return student;
+    }
+
 
     private string generateJwtToken(Student student)
     {

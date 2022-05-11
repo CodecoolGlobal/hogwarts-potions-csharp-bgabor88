@@ -16,15 +16,16 @@ function useStudentActions() {
     leaveRoom,
   };
 
-  function leaveRoom(roomId, studentId, setStudents, setRooms){
-
+  async function leaveRoom(roomId, studentId, setStudents, setRooms){
+    const updatedStudent = await fetchWrapper.put(`${baseUrl}/${studentId}/leave/${roomId}`);
+    const updatedRoom = await roomActions.getRoom(roomId);
+    setStudents((students) => students.map((s) => (s.id === updatedStudent.id ? updatedStudent : s)));
+    setRooms((rooms) => rooms.map((r) => (r.id === updatedRoom.id ? updatedRoom : r)));
   }
 
   async function occupyRoom(roomId, studentId, setStudents, setRooms) {
     const updatedStudent = await fetchWrapper.put(`${baseUrl}/${studentId}/occupy/${roomId}`);
     const updatedRoom = await roomActions.getRoom(roomId);
-    console.dir(updatedStudent);
-    console.dir(updatedRoom);
     setStudents((students) => students.map((s) => (s.id === updatedStudent.id ? updatedStudent : s)));
     setRooms((rooms) => rooms.map((r) => (r.id === updatedRoom.id ? updatedRoom : r)));
   }

@@ -86,7 +86,7 @@ export default function RoomCard(props) {
                   <FontAwesomeIcon
                     className="p-2 hover"
                     onClick={() => {
-                      LeaveRoom(student.id, room.id, setStudents, setRooms);
+                      studentActions.leaveRoom(room.id, student.id, setStudents, setRooms);
                       setOpen(null);
                     }}
                     icon={faCircleMinus}

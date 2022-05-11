@@ -2,14 +2,16 @@ import React, { useState, useContext } from "react";
 import StudentModal from "./StudentModal";
 import { Card, Collapse, ListGroup } from "react-bootstrap";
 import { RoomsContext } from "../DAL/ContextProviders/RoomsContext";
-import { StudentsContext, AddToRoom, LeaveRoom } from "../DAL/ContextProviders/StudentContext";
+import { StudentsContext, LeaveRoom } from "../DAL/ContextProviders/StudentContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faAngleUp, faAngleDown, faPlus, faCircleMinus } from "@fortawesome/free-solid-svg-icons";
 import { useRoomActions } from "../_actions/room.actions";
+import { useStudentActions } from "../_actions/student.actions";
 
 export default function RoomCard(props) {
   const { setRooms } = useContext(RoomsContext);
   const roomActions = useRoomActions();
+  const studentActions = useStudentActions();
   const { students, setStudents } = useContext(StudentsContext);
   const [open, setOpen] = useState(null);
   const [addStudent, setAddStudent] = useState(false);
@@ -29,7 +31,7 @@ export default function RoomCard(props) {
                   className="hover"
                   key={student.id}
                   onClick={() => {
-                    AddToRoom(student.id, room.id, setStudents, setRooms);
+                    studentActions.occupyRoom(room.id, student.id, setStudents, setRooms);
                     setAddStudent(!addStudent);
                   }}
                 >

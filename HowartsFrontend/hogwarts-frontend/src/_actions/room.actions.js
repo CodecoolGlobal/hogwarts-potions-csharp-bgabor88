@@ -9,6 +9,11 @@ function useRoomActions() {
   return {
     add,
     remove,
+    getRoom,
+  };
+
+  function getRoom(id){
+    return fetchWrapper.get(`${baseUrl}/${id}`);
   };
 
   function add(capacity, setRooms) {

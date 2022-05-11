@@ -16,12 +16,6 @@ export const LeaveRoom = async (studentId, roomId, setStudents, setRooms) => {
   await setRooms((rooms) => rooms.map((r) => (r.id === updatedRoom.id ? updatedRoom : r)));
 };
 
-export const AddStudent = async (setStudents, studentData) => {
-  const newStudent = await apiPost("/student", studentData);
-  await setStudents((students) => [...students, newStudent]);
-  return newStudent;
-};
-
 export const StudentsContext = createContext();
 
 export const StudentsProvider = (props) => {

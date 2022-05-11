@@ -1,13 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Navbar as Navigation, Container, Nav, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useAuthActions } from "../_actions/auth.actions";
+import { history } from "../_helpers/history";
 
 function Navbar(props) {
   const Buttons = ["Rooms", "Students"];
   const authActions = useAuthActions();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -35,26 +37,30 @@ function Navbar(props) {
 
               <Dropdown.Menu variant="dark">
                 <Dropdown.Item>
-                  <Link to="Recipes">
-                    <button
-                      type="button"
-                      className="navBtn mt-1 mb-1 btn btn-outline-warning"
-                      onClick={() => props.setActive(null)}
-                    >
-                      Recipes
-                    </button>
-                  </Link>
+                  <button
+                    type="button"
+                    className="navBtn mt-1 mb-1 btn btn-outline-warning"
+                    onClick={() => {
+                      props.setActive(null);
+                      history.push("/Recipes");
+                      navigate("/Recipes");
+                    }}
+                  >
+                    Recipes
+                  </button>
                 </Dropdown.Item>
                 <Dropdown.Item>
-                  <Link to="Ingredients">
-                    <button
-                      type="button"
-                      className="navBtn mt-1 mb-1 btn btn-outline-warning"
-                      onClick={() => props.setActive(null)}
-                    >
-                      Ingredients
-                    </button>
-                  </Link>
+                  <button
+                    type="button"
+                    className="navBtn mt-1 mb-1 btn btn-outline-warning"
+                    onClick={() => {
+                      props.setActive(null);
+                      history.push("/Ingredients");
+                      navigate("/Ingredients");
+                    }}
+                  >
+                    Ingredients
+                  </button>
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>

@@ -49,7 +49,7 @@ function useFetchWrapper() {
           // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
           localStorage.removeItem("user");
           setAuth(null);
-          history.push("/login");
+          history.push("/");
         }
 
         const error = (data && data.message) || response.statusText;

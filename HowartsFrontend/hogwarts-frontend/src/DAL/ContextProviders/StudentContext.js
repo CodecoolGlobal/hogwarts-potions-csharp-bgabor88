@@ -30,16 +30,12 @@ export const DeleteStudent = async (students, setStudents, id) => {
 
 export const LoginStudent = async (setLogin, studentData) => {
   const response = await apiPost(`login`, studentData);
-  if (response){
-    setLogin((login) => null);
-  }
 };
 
 export const StudentsContext = createContext();
 
 export const StudentsProvider = (props) => {
   const [students, setStudents] = useState([]);
-  const [login, setLogin] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -53,7 +49,7 @@ export const StudentsProvider = (props) => {
   }, []);
 
   return (
-    <StudentsContext.Provider value={{ students, setStudents, login, setLogin }}>
+    <StudentsContext.Provider value={{ students, setStudents }}>
       {props.children}
     </StudentsContext.Provider>
   );

@@ -2,10 +2,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { useUserActions } from "../../_actions/user.actions";
+import { useStudentActions } from "../../_actions/student.actions";
 
 export default function LoginArea(props) {
-  const userActions = useUserActions();
+  const studentActions = useStudentActions();
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("e-Mail is required"),
     password: Yup.string().required("Password is required"),
@@ -14,7 +14,7 @@ export default function LoginArea(props) {
   const { register, handleSubmit, setError, formState } = useForm(formOptions);
   const { errors, isSubmitting } = formState;
   const onSubmit = ({ email, password }) => {
-    return userActions.login(email, password).catch((error) => {
+    return studentActions.login(email, password).catch((error) => {
       setError("apiError", { message: error });
     });
   };

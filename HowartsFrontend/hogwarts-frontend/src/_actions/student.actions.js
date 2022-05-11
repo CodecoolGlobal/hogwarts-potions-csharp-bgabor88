@@ -4,9 +4,9 @@ import { useFetchWrapper } from "../_helpers/fetch-wrapper";
 import { authAtom } from "../_state/auth";
 import { useNavigate } from "react-router-dom";
 
-export { useUserActions };
+export { useStudentActions };
 
-function useUserActions() {
+function useStudentActions() {
   const baseUrl = "/student";
   const fetchWrapper = useFetchWrapper();
   const setAuth = useSetRecoilState(authAtom);
@@ -26,10 +26,10 @@ function useUserActions() {
   }
 
   function login(email, password) {
-    return fetchWrapper.post(`${baseUrl}/login`, { email, password }).then((user) => {
+    return fetchWrapper.post(`${baseUrl}/login`, { email, password }).then((student) => {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
-      localStorage.setItem("user", JSON.stringify(user));
-      setAuth(user);
+      localStorage.setItem("user", JSON.stringify(student));
+      setAuth(student);
       history.push("/");
       navigate("/");
     });

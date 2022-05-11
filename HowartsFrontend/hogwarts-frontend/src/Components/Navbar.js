@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { Navbar as Navigation, Container, Nav, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { useUserActions } from "../_actions/user.actions";
+import { useStudentActions } from "../_actions/student.actions";
 
 function Navbar(props) {
   const Buttons = ["Rooms", "Students"];
-  const userActions = useUserActions();
+  const studentActions = useStudentActions();
 
   return (
     <>
@@ -66,7 +66,7 @@ function Navbar(props) {
           </Dropdown.Toggle>
           <Dropdown.Menu variant="dark">
             <Dropdown.Item>
-              <button onClick={userActions.logout} type="button" className="navBtn mt-1 mb-1 btn btn-outline-warning">
+              <button onClick={studentActions.logout} type="button" className="navBtn mt-1 mb-1 btn btn-outline-warning">
                 Logout
               </button>
             </Dropdown.Item>

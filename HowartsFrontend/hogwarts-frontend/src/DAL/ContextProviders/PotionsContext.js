@@ -1,15 +1,16 @@
 import React, { useState, useEffect, createContext } from "react";
-import { apiGet } from "../CRUD";
+import { useFetchWrapper } from "../../_helpers/fetch-wrapper";
 
 export const PotionsContext = createContext();
 
 export const PotionsProvider = (props) => {
   const [potions, setPotions] = useState([]);
+  const fetchWrapper = useFetchWrapper();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await apiGet("/potion");
+        const data = await fetchWrapper.get("/potion");
         setPotions([...data]);
       } catch (error) {
         console.log("error", error);

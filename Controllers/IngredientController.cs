@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using HogwartsPotions.Helper;
 using HogwartsPotions.Models.Entities;
 using HogwartsPotions.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HogwartsPotions.Controllers;
 
-[Helper.Authorize]
-[ApiController, Route("/[controller]")]
+[Authorize]
+[ApiController]
+[Route("/[controller]")]
 public class IngredientController : ControllerBase
 {
     private readonly IIngredientRepository _ingredientRepository;
@@ -24,10 +27,10 @@ public class IngredientController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult AddIngredient([FromBody] Ingredient ingredient)
+    public async Task<IActionResult> AddIngredient([FromBody] Ingredient ingredient)
     {
-        _ingredientRepository.AddIngredient(ingredient);
-        return CreatedAtAction("GetIngredientById", new { ingredient.Id }, ingredient);
+        await _ingredientRepository.AddIngredient(ingredient);
+        return CreatedAtAction("GetIngredientById", new {ingredient.Id}, ingredient);
     }
 
     [HttpGet("{id:long}")]
@@ -39,7 +42,7 @@ public class IngredientController : ControllerBase
     [HttpPut("{id:long}")]
     public IActionResult UpdateIngredientById(long id, [FromBody] Ingredient updatedIngredient)
     {
-        updatedIngredient.Id = id; 
+        updatedIngredient.Id = id;
         _ingredientRepository.UpdateIngredient(updatedIngredient);
         return Ok();
     }

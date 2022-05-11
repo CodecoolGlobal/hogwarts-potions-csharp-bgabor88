@@ -1,5 +1,4 @@
 import React, { useState, useEffect, createContext } from "react";
-import { apiGet } from "../CRUD";
 import { useFetchWrapper } from "../../_helpers/fetch-wrapper";
 
 export const RecipesContext = createContext();

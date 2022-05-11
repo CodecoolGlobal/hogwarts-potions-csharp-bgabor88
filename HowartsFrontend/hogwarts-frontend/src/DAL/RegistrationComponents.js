@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Card, Form, Button } from "react-bootstrap";
 import { RoomsContext } from "../DAL/ContextProviders/RoomsContext";
-import { StudentsContext, AddStudent } from "../DAL/ContextProviders/StudentContext";
-import { IngredientsContext, AddIngredient } from "../DAL/ContextProviders/IngredientsContext";
+import { IngredientsContext } from "../DAL/ContextProviders/IngredientsContext";
 import { useRoomActions } from "../_actions/room.actions";
+import { useIngredientActions } from "../_actions/ingredient.actions";
 
 export function RegisterRoom() {
   const { setRooms } = useContext(RoomsContext);
@@ -42,13 +42,15 @@ export function RegisterRoom() {
 
 export function RegisterIngredient() {
   const { setIngredients } = useContext(IngredientsContext);
+  const ingredientActions = useIngredientActions();
 
   const formHandler = (event) => {
     event.preventDefault();
     const ingredientData = {
       name: event.target[0].value,
     };
-    AddIngredient(setIngredients, ingredientData).then(() => event.target.reset());
+    ingredientActions.add(ingredientData, setIngredients);
+    event.target.reset();
   };
 
   return (

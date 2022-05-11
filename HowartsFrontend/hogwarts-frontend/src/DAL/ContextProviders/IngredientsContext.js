@@ -1,20 +1,16 @@
-import React, { useState, useEffect, createContext } from "react";
-import { apiGet, apiPost } from "../CRUD";
+import React, { useState, useEffect, createContext, useCallback } from "react";
+import { useFetchWrapper } from "../../_helpers/fetch-wrapper";
 
 export const IngredientsContext = createContext();
 
-export const AddIngredient = async (setIngredients, ingredientData) => {
-  const newIngredient = await apiPost("/ingredient", ingredientData);
-  await setIngredients(ingredients => [...ingredients, newIngredient]);
-};
-
 export const IngredientsProvider = (props) => {
   const [ingredients, setIngredients] = useState([]);
-
+  const fetchWrapper = useFetchWrapper();
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await apiGet("/ingredient");
+        const data = await fetchWrapper.get("/ingredient");
         setIngredients([...data]);
       } catch (error) {
         console.log("error", error);

@@ -1,6 +1,6 @@
 //#region Imports
 import { useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import Students from "./Components/Students";
 import Rooms from "./Components/Rooms";
@@ -19,7 +19,6 @@ import { authAtom } from "./_state/auth";
 
 function App() {
   const [activePage, setActivePage] = useState(window.location.pathname.substring(1));
-  const navigate = useNavigate();
   const auth = useRecoilValue(authAtom);
   if (!auth) {
     history.push("/");

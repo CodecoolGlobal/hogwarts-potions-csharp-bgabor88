@@ -1,15 +1,18 @@
 import React, { useContext } from "react";
 import { Card, Form, Button } from "react-bootstrap";
-import { RoomsContext, AddRoom } from "../DAL/ContextProviders/RoomsContext";
+import { RoomsContext } from "../DAL/ContextProviders/RoomsContext";
 import { StudentsContext, AddStudent } from "../DAL/ContextProviders/StudentContext";
 import { IngredientsContext, AddIngredient } from "../DAL/ContextProviders/IngredientsContext";
+import { useRoomActions } from "../_actions/room.actions";
 
 export function RegisterRoom() {
   const { setRooms } = useContext(RoomsContext);
+  const roomActions = useRoomActions();
 
-  const formHandler = async (event, capacity) => {
+  const formHandler = (event, capacity) => {
     event.preventDefault();
-    await AddRoom(setRooms, capacity).then(() => event.target.reset());
+    roomActions.add(capacity, setRooms);
+    event.target.reset();
   };
 
   return (

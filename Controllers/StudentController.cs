@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HogwartsPotions.Helper;
 using HogwartsPotions.Models;
 using HogwartsPotions.Models.AuthenticationEntities;
 using HogwartsPotions.Models.Entities;
@@ -8,11 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HogwartsPotions.Controllers;
 
-[ApiController, Route("/[controller]")]
+[ApiController]
+[Route("/[controller]")]
 public class StudentController : ControllerBase
 {
-    private readonly IStudentRepository _studentRepository;
     private readonly IRoomRepository _roomRepository;
+    private readonly IStudentRepository _studentRepository;
 
     public StudentController(IStudentRepository studentRepository, IRoomRepository roomRepository)
     {
@@ -25,18 +27,18 @@ public class StudentController : ControllerBase
     {
         var response = _studentRepository.Authenticate(model);
         if (response == null)
-            return BadRequest(new { message = "e-Mail or password is incorrect" });
+            return BadRequest(new {message = "e-Mail or password is incorrect"});
         return Ok(response);
     }
 
-    [Helper.Authorize]
+    [Authorize]
     [HttpGet("{studentId:long}/potions")]
     public async Task<List<Potion>> GetPotionsByStudent(long studentId)
     {
         return await _studentRepository.GetAllPotionsByStudent(await _studentRepository.GetStudent(studentId));
     }
 
-    [Helper.Authorize]
+    [Authorize]
     [HttpGet]
     public async Task<List<Student>> GetAllStudents()
     {
@@ -46,21 +48,22 @@ public class StudentController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> AddStudent([FromBody] RegisterModel model)
     {
-        var student = new Student {Name = model.Name};
-        var studentLoginData = new UserLoginData { Password = model.Password, Student = student };
+        var student = new Student
+            {Name = model.Email.Split('@')[0], Email = model.Email, HouseType = model.House, PetType = model.Pet};
+        var studentLoginData = new UserLoginData {Password = model.Password, Student = student};
         student.UserLoginData = studentLoginData;
         await _studentRepository.AddStudent(student);
-        return CreatedAtAction("GetStudentById", new { student.Id }, student);
+        return CreatedAtAction("GetStudentById", new {student.Id}, student);
     }
 
-    [Helper.Authorize]
+    [Authorize]
     [HttpGet("{id:long}")]
     public async Task<Student> GetStudentById(long id)
     {
         return await _studentRepository.GetStudent(id);
     }
 
-    [Helper.Authorize]
+    [Authorize]
     [HttpPut("{id:long}")]
     public async Task UpdateStudentById(long id, [FromBody] Student updatedStudent)
     {
@@ -68,7 +71,7 @@ public class StudentController : ControllerBase
         await _studentRepository.UpdateStudent(updatedStudent);
     }
 
-    [Helper.Authorize]
+    [Authorize]
     [HttpPut("{studentId:long}/occupy/{roomId:long}")]
     public async Task<IActionResult> OccupyRoom(long studentId, long roomId)
     {
@@ -77,20 +80,20 @@ public class StudentController : ControllerBase
         if (student != null && room != null)
         {
             student.Room = room;
-            return CreatedAtAction("GetStudentById", new { student.Id }, student);
+            return CreatedAtAction("GetStudentById", new {student.Id}, student);
         }
 
         return NoContent();
     }
 
-    [Helper.Authorize]
+    [Authorize]
     [HttpDelete("{id:long}")]
     public async Task DeleteStudentById(long id)
     {
         await _studentRepository.DeleteStudent(id);
     }
 
-    [Helper.Authorize]
+    [Authorize]
     [HttpPut("{studentId:long}/leave/{roomId:long}")]
     public async Task<IActionResult> LeaveRoom(long studentId, long roomId)
     {
@@ -99,7 +102,7 @@ public class StudentController : ControllerBase
         if (student != null && room != null)
         {
             room.Residents.Remove(student);
-            return CreatedAtAction("GetStudentById", new { student.Id }, student);
+            return CreatedAtAction("GetStudentById", new {student.Id}, student);
         }
 
         return NoContent();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext, useCallback } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import { useFetchWrapper } from "../../_helpers/fetch-wrapper";
 
 export const IngredientsContext = createContext();
@@ -6,7 +6,7 @@ export const IngredientsContext = createContext();
 export const IngredientsProvider = (props) => {
   const [ingredients, setIngredients] = useState([]);
   const fetchWrapper = useFetchWrapper();
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -17,6 +17,7 @@ export const IngredientsProvider = (props) => {
       }
     };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

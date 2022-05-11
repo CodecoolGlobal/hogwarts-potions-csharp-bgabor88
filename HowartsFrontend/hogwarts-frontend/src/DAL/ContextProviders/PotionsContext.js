@@ -17,6 +17,7 @@ export const PotionsProvider = (props) => {
       }
     };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <PotionsContext.Provider value={{ potions, setPotions }}>{props.children}</PotionsContext.Provider>;

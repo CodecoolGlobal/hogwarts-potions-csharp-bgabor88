@@ -13,6 +13,7 @@ export default function Landing() {
   useEffect(() => {
     // redirect to home if already logged in
     if (auth) history.push("/");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

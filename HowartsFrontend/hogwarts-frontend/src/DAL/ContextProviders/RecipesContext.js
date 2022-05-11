@@ -17,6 +17,7 @@ export const RecipesProvider = (props) => {
       }
     };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <RecipesContext.Provider value={{ recipes, setRecipes }}>{props.children}</RecipesContext.Provider>;

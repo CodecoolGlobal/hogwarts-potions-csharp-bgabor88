@@ -6,6 +6,7 @@ export const StudentsContext = createContext();
 export const StudentsProvider = (props) => {
   const [students, setStudents] = useState([]);
   const studentActions = useStudentActions();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -16,6 +17,7 @@ export const StudentsProvider = (props) => {
       }
     };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

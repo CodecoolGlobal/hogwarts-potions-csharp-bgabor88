@@ -16,6 +16,7 @@ export const RoomsProvider = (props) => {
       }
     };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <RoomsContext.Provider value={{ rooms, setRooms }}>{props.children}</RoomsContext.Provider>;

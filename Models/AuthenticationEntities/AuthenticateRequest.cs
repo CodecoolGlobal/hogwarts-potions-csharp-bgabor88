@@ -5,7 +5,7 @@ namespace HogwartsPotions.Models.AuthenticationEntities;
 public class AuthenticateRequest
 {
     [Required]
-    public string Name { get; set; }
+    public string Email { get; set; }
 
     [Required]
     public string Password { get; set; }

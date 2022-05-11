@@ -14,6 +14,7 @@ public class Student
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long Id { get; set; }
     public string Name { get; set; }
+    public string Email { get; set; }
 
     public HouseType HouseType { get; set; }
     public PetType PetType { get; set; }

@@ -25,7 +25,7 @@ public class StudentController : ControllerBase
     {
         var response = _studentRepository.Authenticate(model);
         if (response == null)
-            return BadRequest(new { message = "Username or password is incorrect" });
+            return BadRequest(new { message = "e-Mail or password is incorrect" });
         return Ok(response);
     }
 

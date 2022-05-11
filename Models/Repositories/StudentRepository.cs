@@ -80,7 +80,7 @@ public class StudentRepository : IStudentRepository
         var loginData = _context.UserLoginDatas
             .Include(e => e.Student)
             .SingleOrDefault(
-                x => x.Student.Name == model.Name && x.Password == model.Password);
+                x => x.Student.Email == model.Email && x.Password == model.Password);
 
         // return null if student not found
         if (loginData == null) return null;

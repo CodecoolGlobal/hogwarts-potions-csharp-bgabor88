@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import StudentModal from "./StudentModal";
 import { Card, Collapse, ListGroup } from "react-bootstrap";
 import { RoomsContext } from "../DAL/ContextProviders/RoomsContext";
-import { StudentsContext, LeaveRoom } from "../DAL/ContextProviders/StudentContext";
+import { StudentsContext } from "../DAL/ContextProviders/StudentContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faAngleUp, faAngleDown, faPlus, faCircleMinus } from "@fortawesome/free-solid-svg-icons";
 import { useRoomActions } from "../_actions/room.actions";
@@ -10,9 +10,9 @@ import { useStudentActions } from "../_actions/student.actions";
 
 export default function RoomCard(props) {
   const { setRooms } = useContext(RoomsContext);
+  const { students, setStudents } = useContext(StudentsContext);
   const roomActions = useRoomActions();
   const studentActions = useStudentActions();
-  const { students, setStudents } = useContext(StudentsContext);
   const [open, setOpen] = useState(null);
   const [addStudent, setAddStudent] = useState(false);
   const room = props.room;

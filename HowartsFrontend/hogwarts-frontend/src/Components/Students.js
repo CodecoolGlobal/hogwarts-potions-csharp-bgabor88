@@ -6,11 +6,13 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Card } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { useStudentActions } from "../_actions/student.actions";
+import { history } from "../_helpers/history";
 
 export default function Students() {
   const { students, setStudents } = useContext(StudentsContext);
   const [selected, setSelected] = useState([]);
   const studentActions = useStudentActions();
+  history.push("/Students");
 
   const Content = () => {
     if (selected.length === 0) {

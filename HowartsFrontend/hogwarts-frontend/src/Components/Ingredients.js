@@ -6,12 +6,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { RegisterIngredient } from "../DAL/RegistrationComponents";
+import { history } from "../_helpers/history";
 
 export default function Ingredients() {
   const { ingredients } = useContext(IngredientsContext);
   const { recipes } = useContext(RecipesContext);
   const [selected, setSelected] = useState([]);
   const [open, setOpen] = useState(null);
+  history.push("/Ingredients")
 
   const Content = () => {
     if (selected.length === 0) {

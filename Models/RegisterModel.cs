@@ -12,10 +12,10 @@ namespace HogwartsPotions.Models
         public string Password { get; set; }
 
         [Required]
-        public HouseType House { get; set; }
+        public HouseType HouseType { get; set; }
 
         [Required]
-        public PetType Pet { get; set; }
+        public PetType PetType { get; set; }
 
     }
 }

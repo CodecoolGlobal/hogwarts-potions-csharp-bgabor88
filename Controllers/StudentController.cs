@@ -4,6 +4,7 @@ using HogwartsPotions.Helper;
 using HogwartsPotions.Models;
 using HogwartsPotions.Models.AuthenticationEntities;
 using HogwartsPotions.Models.Entities;
+using HogwartsPotions.Models.Enums;
 using HogwartsPotions.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,7 +50,12 @@ public class StudentController : ControllerBase
     public async Task<IActionResult> AddStudent([FromBody] RegisterModel model)
     {
         var student = new Student
-            {Name = model.Email.Split('@')[0], Email = model.Email, HouseType = model.House, PetType = model.Pet};
+        {
+            Name = model.Email.Split('@')[0], 
+            Email = model.Email, 
+            HouseType = model.HouseType, 
+            PetType = model.PetType
+        };
         var studentLoginData = new UserLoginData {Password = model.Password, Student = student};
         student.UserLoginData = studentLoginData;
         await _studentRepository.AddStudent(student);

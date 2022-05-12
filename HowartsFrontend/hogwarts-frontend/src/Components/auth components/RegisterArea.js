@@ -25,7 +25,7 @@ export function RegisterStudent(props) {
         <Card.Body className="p-0">
           <Form onSubmit={(e) => formHandler(e)}>
             <Form.Group className="mb-3">
-              <Form.Control required min="2" size="sm" type="text" id="studentName" placeholder="Student name" />
+              <Form.Control required min="2" size="sm" type="text" id="studentName" placeholder="Student e-Mail" />
               <Form.Control required min="6" size="sm" type="password" id="studentPass" placeholder="Password" />
               <Form.Select required size="sm">
                 <option key="defaultHouse" value="" hidden default>

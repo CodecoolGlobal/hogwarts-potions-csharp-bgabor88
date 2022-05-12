@@ -7,12 +7,27 @@ import { Card } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { useStudentActions } from "../_actions/student.actions";
 import { history } from "../_helpers/history";
+import { authAtom } from "../_state/auth";
+import { useRecoilValue } from "recoil";
 
 export default function Students() {
   const { students, setStudents } = useContext(StudentsContext);
   const [selected, setSelected] = useState([]);
   const studentActions = useStudentActions();
+  const auth = useRecoilValue(authAtom);
   history.push("/Students");
+
+  const Operations = () => {
+    const student = selected[0];
+    const handleDelete = () => {
+      studentActions.remove(student.id, setStudents);
+      setSelected([]);
+    };
+    if (student.id !== auth.id) {
+      return;
+    };
+    return <FontAwesomeIcon className="hover deleteBtn" onClick={() => handleDelete()} icon={faTrash} size="1x" />;
+  };
 
   const Content = () => {
     if (selected.length === 0) {
@@ -39,15 +54,7 @@ export default function Students() {
       >
         <Card.Header className="mb-0 d-flex flex-nowrap justify-content-between flex-row">
           <div className="card-title">{`${student.name}`}</div>
-          <FontAwesomeIcon
-            className="hover deleteBtn"
-            onClick={() => {
-              studentActions.remove(student.id, setStudents);
-              setSelected([]);
-            }}
-            icon={faTrash}
-            size="1x"
-          />
+          <Operations />
         </Card.Header>
         <StudentData student={student} />
       </Card>

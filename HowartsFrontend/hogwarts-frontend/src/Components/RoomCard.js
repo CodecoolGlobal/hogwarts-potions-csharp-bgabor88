@@ -1,14 +1,18 @@
 import React, { useState, useContext } from "react";
 import StudentModal from "./StudentModal";
 import { Card, Collapse, ListGroup } from "react-bootstrap";
-import { DeleteRoom, RoomsContext } from "../DAL/ContextProviders/RoomsContext";
-import { StudentsContext, AddToRoom, LeaveRoom } from "../DAL/ContextProviders/StudentContext";
+import { RoomsContext } from "../DAL/ContextProviders/RoomsContext";
+import { StudentsContext } from "../DAL/ContextProviders/StudentContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faAngleUp, faAngleDown, faPlus, faCircleMinus } from "@fortawesome/free-solid-svg-icons";
+import { useRoomActions } from "../_actions/room.actions";
+import { useStudentActions } from "../_actions/student.actions";
 
 export default function RoomCard(props) {
-  const { rooms, setRooms } = useContext(RoomsContext);
+  const { setRooms } = useContext(RoomsContext);
   const { students, setStudents } = useContext(StudentsContext);
+  const roomActions = useRoomActions();
+  const studentActions = useStudentActions();
   const [open, setOpen] = useState(null);
   const [addStudent, setAddStudent] = useState(false);
   const room = props.room;
@@ -27,7 +31,7 @@ export default function RoomCard(props) {
                   className="hover"
                   key={student.id}
                   onClick={() => {
-                    AddToRoom(student.id, room.id, setStudents, setRooms);
+                    studentActions.occupyRoom(room.id, student.id, setStudents, setRooms);
                     setAddStudent(!addStudent);
                   }}
                 >
@@ -54,7 +58,7 @@ export default function RoomCard(props) {
           />
           <FontAwesomeIcon
             className="deleteBtn hover"
-            onClick={() => DeleteRoom(rooms, setRooms, room.id)}
+            onClick={() => roomActions.remove(room.id, setRooms)}
             icon={faTrash}
             size="1x"
           />
@@ -82,7 +86,7 @@ export default function RoomCard(props) {
                   <FontAwesomeIcon
                     className="p-2 hover"
                     onClick={() => {
-                      LeaveRoom(student.id, room.id, setStudents, setRooms);
+                      studentActions.leaveRoom(room.id, student.id, setStudents, setRooms);
                       setOpen(null);
                     }}
                     icon={faCircleMinus}

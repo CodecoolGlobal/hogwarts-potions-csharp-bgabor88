@@ -22,6 +22,29 @@ namespace HogwartsPotions.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("HogwartsPotions.Models.AuthenticationEntities.UserLoginData", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("StudentId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId")
+                        .IsUnique()
+                        .HasFilter("[StudentId] IS NOT NULL");
+
+                    b.ToTable("UserLoginDatas");
+                });
+
             modelBuilder.Entity("HogwartsPotions.Models.Entities.Ingredient", b =>
                 {
                     b.Property<long>("Id")
@@ -112,6 +135,9 @@ namespace HogwartsPotions.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte>("HouseType")
                         .HasColumnType("tinyint");
 
@@ -122,6 +148,9 @@ namespace HogwartsPotions.Migrations
                         .HasColumnType("tinyint");
 
                     b.Property<long?>("RoomId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("UserLoginDataId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -159,6 +188,16 @@ namespace HogwartsPotions.Migrations
                     b.HasIndex("RecipesId");
 
                     b.ToTable("IngredientRecipe");
+                });
+
+            modelBuilder.Entity("HogwartsPotions.Models.AuthenticationEntities.UserLoginData", b =>
+                {
+                    b.HasOne("HogwartsPotions.Models.Entities.Student", "Student")
+                        .WithOne("UserLoginData")
+                        .HasForeignKey("HogwartsPotions.Models.AuthenticationEntities.UserLoginData", "StudentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("HogwartsPotions.Models.Entities.Potion", b =>
@@ -234,6 +273,8 @@ namespace HogwartsPotions.Migrations
                     b.Navigation("Potions");
 
                     b.Navigation("Recipes");
+
+                    b.Navigation("UserLoginData");
                 });
 #pragma warning restore 612, 618
         }

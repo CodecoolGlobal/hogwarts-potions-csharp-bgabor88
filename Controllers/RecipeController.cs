@@ -1,53 +1,51 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HogwartsPotions.Models;
 using HogwartsPotions.Models.Entities;
+using HogwartsPotions.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HogwartsPotions.Controllers
+namespace HogwartsPotions.Controllers;
+
+[Helper.Authorize]
+[ApiController, Route("/[controller]")]
+public class RecipeController : ControllerBase
 {
-    [ApiController, Route("/[controller]")]
-    public class RecipeController : ControllerBase
+    private readonly IRecipeRepository _recipeRepository;
+
+    public RecipeController(IRecipeRepository recipeRepository)
     {
-        private readonly HogwartsContext _context;
+        _recipeRepository = recipeRepository;
+    }
 
-        public RecipeController(HogwartsContext context)
-        {
-            _context = context;
-        }
+    [HttpGet]
+    public async Task<List<Recipe>> GetAllRecipe()
+    {
+        return await _recipeRepository.GetAllRecipe();
+    }
 
-        [HttpGet]
-        public async Task<List<Recipe>> GetAllRecipe()
-        {
-            return await _context.GetAllRecipe();
-        }
+    [HttpPost]
+    public void AddRecipe([FromBody] Recipe recipe)
+    {
+        _recipeRepository.AddRecipe(recipe);
+    }
 
-        [HttpPost]
-        public async  Task AddRecipe([FromBody] Recipe recipe)
-        {
-            await _context.AddRecipe(recipe);
-            await _context.SaveChangesAsync();
-        }
+    [HttpGet("{id:long}")]
+    public async Task<Recipe> GetRecipeById(long id)
+    {
+        return await _recipeRepository.GetRecipe(id);
+    }
 
-        [HttpGet("{id:long}")]
-        public async Task<Recipe> GetRecipeById(long id)
-        {
-            return await _context.GetRecipe(id);
-        }
+    [HttpPut("{id:long}")]
+    public async Task UpdateRecipeById(long id, [FromBody] Recipe updatedRecipe)
+    {
+        updatedRecipe.Id = id;
+        await _recipeRepository.UpdateRecipe(updatedRecipe);
+    }
 
-        [HttpPut("{id:long}")]
-        public async Task UpdateRecipeById(long id, [FromBody] Recipe updatedRecipe)
-        {
-            updatedRecipe.Id = id;
-            await _context.UpdateRecipe(updatedRecipe);
-            await _context.SaveChangesAsync();
-        }
-
-        [HttpDelete("{id:long}")]
-        public async Task DeleteRecipeById(long id)
-        {
-            await _context.DeleteRecipe(id);
-            await _context.SaveChangesAsync();
-        }
+    [HttpDelete("{id:long}")]
+    public IActionResult DeleteRecipeById(long id)
+    {
+        _recipeRepository.DeleteRecipe(id);
+        return Ok();
     }
 }

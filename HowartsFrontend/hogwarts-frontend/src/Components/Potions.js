@@ -10,7 +10,6 @@ export default function Potions(props) {
   const [open, setOpen] = useState(null);
 
   const brewStatuses = ["Currently brewing", "Done! This is a Replica", "Done! This is a new Discovery"];
-
   return (
     <Container className="d-flex flex-column flex-wrap justify-content-center m-0">
       {potionsByStudent.map((potion) => (

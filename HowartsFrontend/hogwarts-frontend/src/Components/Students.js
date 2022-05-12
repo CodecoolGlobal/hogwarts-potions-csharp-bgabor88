@@ -1,15 +1,33 @@
 import React, { useContext, useState } from "react";
 import StudentData from "./StudentData";
-import { RegisterStudent } from "../DAL/RegistrationComponents";
-import { StudentsContext, DeleteStudent } from "../DAL/ContextProviders/StudentContext";
+import { StudentsContext } from "../DAL/ContextProviders/StudentContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Card } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
+import { useStudentActions } from "../_actions/student.actions";
+import { history } from "../_helpers/history";
+import { authAtom } from "../_state/auth";
+import { useRecoilValue } from "recoil";
 
-export default function Students(props) {
+export default function Students() {
   const { students, setStudents } = useContext(StudentsContext);
   const [selected, setSelected] = useState([]);
+  const studentActions = useStudentActions();
+  const auth = useRecoilValue(authAtom);
+  history.push("/Students");
+
+  const Operations = () => {
+    const student = selected[0];
+    const handleDelete = () => {
+      studentActions.remove(student.id, setStudents);
+      setSelected([]);
+    };
+    if (student.id !== auth.id) {
+      return;
+    };
+    return <FontAwesomeIcon className="hover deleteBtn" onClick={() => handleDelete()} icon={faTrash} size="1x" />;
+  };
 
   const Content = () => {
     if (selected.length === 0) {
@@ -36,15 +54,7 @@ export default function Students(props) {
       >
         <Card.Header className="mb-0 d-flex flex-nowrap justify-content-between flex-row">
           <div className="card-title">{`${student.name}`}</div>
-          <FontAwesomeIcon
-            className="hover deleteBtn"
-            onClick={() => {
-              DeleteStudent(students, setStudents, student.id);
-              setSelected([]);
-            }}
-            icon={faTrash}
-            size="1x"
-          />
+          <Operations />
         </Card.Header>
         <StudentData student={student} />
       </Card>
@@ -66,7 +76,6 @@ export default function Students(props) {
             selected={selected}
           />
         </Card>
-        <RegisterStudent setter={setSelected} />
       </div>
       <div className="col">
         <Content />

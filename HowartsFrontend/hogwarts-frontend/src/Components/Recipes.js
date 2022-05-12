@@ -5,11 +5,13 @@ import { ListGroup, Card, Container, Collapse } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import IngredientList from "./IngredientList";
+import { history } from "../_helpers/history";
 
 export default function Recipes() {
   const { recipes } = useContext(RecipesContext);
   const { potions } = useContext(PotionsContext);
   const [open, setOpen] = useState(null);
+  history.push("/Recipes");
 
   return (
     <Container className="d-flex flex-row flex-wrap justify-content-center m-0">

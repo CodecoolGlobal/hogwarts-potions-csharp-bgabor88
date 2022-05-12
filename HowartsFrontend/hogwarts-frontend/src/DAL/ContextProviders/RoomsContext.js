@@ -1,32 +1,22 @@
 import React, { useState, useEffect, createContext } from "react";
-import { apiDelete, apiGet, apiPost } from "../CRUD";
-
-export const AddRoom = async (setRooms, capacity) => {
-  const newRoom = await apiPost("/room", { capacity: capacity });
-  await setRooms(rooms => [...rooms, newRoom]);
-};
-
-export const DeleteRoom = async (rooms, setRooms, id) => {
-  const updatedRooms = [...rooms];
-  await apiDelete(`room/${id}`);
-  await setRooms(updatedRooms.filter((room) => room.id !== id));
-};
+import { useFetchWrapper } from "../../_helpers/fetch-wrapper";
 
 export const RoomsContext = createContext();
 
 export const RoomsProvider = (props) => {
   const [rooms, setRooms] = useState([]);
-
+  const fetchWrapper = useFetchWrapper();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await apiGet("/room");
+        const data = await fetchWrapper.get("/room");
         setRooms([...data]);
       } catch (error) {
         console.log("error", error);
       }
     };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <RoomsContext.Provider value={{ rooms, setRooms }}>{props.children}</RoomsContext.Provider>;

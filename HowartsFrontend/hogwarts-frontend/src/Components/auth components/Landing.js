@@ -27,7 +27,6 @@ export default function Landing() {
       >
         Login
       </button>
-
       <button
         type="button"
         className="navBtn p-3 mt-1 mb-1 btn btn-dark btn-outline-warning"

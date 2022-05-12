@@ -1,4 +1,3 @@
-//#region Imports
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./Components/Navbar";
@@ -15,7 +14,6 @@ import Landing from "./Components/auth components/Landing";
 import { history } from "./_helpers/history";
 import { useRecoilValue } from "recoil";
 import { authAtom } from "./_state/auth";
-//#endregion
 
 function App() {
   const [activePage, setActivePage] = useState(window.location.pathname.substring(1));
